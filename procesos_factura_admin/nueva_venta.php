@@ -114,7 +114,7 @@ if ($resultado_2) {
     <?php echo "<div class='container mt-6 no-print'>
         <div class='row'>
             <div class='col-auto'>
-                <a href='../proceso_factura_admin/eliminar_venta.php?id_venta=" . $filas['id_venta'] . "' class='btn btn-danger' onclick='return confirmar()'>ELIMINAR</a>
+                <a href='../procesos_factura_admin/eliminar_venta.php?id_venta=" . $filas['id_venta'] . "' class='btn btn-danger' onclick='return confirmar()'>ELIMINAR</a>
             </div>
         </div>
     </div>"; ?>
