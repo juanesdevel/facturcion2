@@ -1,0 +1,78 @@
+/* Estilos para una página con fondo oscuro */
+body {
+    background-color: #121212; /* Fondo oscuro */
+    color: #e0e0e0; /* Texto claro */
+    font-family: Arial, sans-serif; /* Fuente legible */
+    line-height: 1.6; /* Espaciado cómodo para la lectura */
+    margin: 0;
+    padding: 0;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    color: #ffffff; /* Títulos en blanco */
+}
+
+a {
+    color: #1e90ff; /* Enlaces en azul claro para contraste */
+    text-decoration: none;
+}
+
+a:hover {
+    color: #ff6347; /* Color de enlace al pasar el ratón */
+    text-decoration: underline;
+}
+
+p {
+    margin-bottom: 1.5rem; /* Espaciado entre párrafos */
+}
+
+button {
+    background-color: #333; /* Fondo del botón oscuro */
+    color: #fff; /* Texto del botón claro */
+    border: 1px solid #444; /* Borde oscuro */
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #555; /* Cambio de color al pasar el ratón */
+}
+
+/* Caja de contenido */
+.container {
+    width: 80%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #1e1e1e; /* Fondo un poco más claro para el contenedor */
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.5); /* Sombra para dar relieve */
+    border-radius: 10px;
+}
+
+/* Formato accesible para textos largos */
+p, li {
+    font-size: 18px; /* Tamaño de texto cómodo */
+}
+
+input, textarea {
+    background-color: #333; /* Fondo oscuro para los inputs */
+    color: #e0e0e0; /* Texto claro en los inputs */
+    border: 1px solid #444; /* Borde oscuro */
+    padding: 10px;
+    border-radius: 5px;
+}
+
+/* Media query para pantallas pequeñas */
+@media (max-width: 768px) {
+    .container {
+        width: 95%;
+    }
+
+    p, li {
+        font-size: 16px; /* Ajuste del tamaño del texto para móviles */
+    }
+}
+.sombra {
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
