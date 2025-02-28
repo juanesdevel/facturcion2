@@ -21,11 +21,15 @@ include '../conexion/sesion.php';
         .sombra {
             box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
         }
+        .tabla-con-bordes {
+            border: 2px solid #000; /* Bordes de 2px de grosor y color negro */
+        }
+        .tabla-con-bordes th, .tabla-con-bordes td {
+            border: 1px solid #000; /* Bordes de 1px de grosor y color negro para celdas */
+        }
     </style>
 
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <script src="librerias/jquery-3.2.1.min.js"></script>
-
     <script>
         function confirmar(event) {
             if (!confirm('¿Está seguro de eliminar el usuario de la base de datos?')) {
@@ -37,8 +41,7 @@ include '../conexion/sesion.php';
 <body>
 
 <div class="container-fluid alert alert-info sombra">
-    <h1>Administración de Clientes <i class="fas fa-user-friends"></i>
-</h1>
+    <h1>Administración de Clientes <i class="fas fa-user-friends"></i></h1>
     <a href="inicio_admin.php" class="btn btn-dark btn-sm">Regresar</a>
     <span> </span><?php echo "Usuario: " . htmlspecialchars($_SESSION['usuario']); ?>
 </div>
@@ -46,10 +49,8 @@ include '../conexion/sesion.php';
 <div class="container-fluid">
     <div class="row">
         <div class="col">
-          
-                <a href="#" class="btn btn-primary" onclick="location.reload();">Actualizar página</a>
-                <a href="nuevo_cliente.php" class="btn btn-success">Nuevo Cliente</a>
-            
+            <a href="#" class="btn btn-primary" onclick="location.reload();">Actualizar página</a>
+            <a href="nuevo_cliente.php" class="btn btn-success">Nuevo Cliente</a>
         </div>
     </div>
 </div>
@@ -90,7 +91,7 @@ include '../conexion/sesion.php';
             if ($resultado_2->num_rows > 0) {
                 echo '<div class="alert alert-success" role="alert">' . $resultado_2->num_rows . ' resultados de la búsqueda: ' . htmlspecialchars($doc_cliente) . '</div>';
                 
-                echo "<table class='table table-bordered table-striped'>";
+                echo "<table class='table table-bordered table-striped tabla-con-bordes'>";
                 echo "<tr><th>ID Cliente</th><th>Nombre Cliente</th><th>Documento Cliente</th><th>Celular 1</th><th>Celular 2</th><th>Dirección</th><th>Correo</th><th>Acciones</th></tr>";
 
                 while ($fila = $resultado_2->fetch_assoc()) {
@@ -118,7 +119,7 @@ include '../conexion/sesion.php';
 
             if ($resultado->num_rows > 0) {
                 echo '<div class="alert alert-success" role="alert">' . $resultado->num_rows . ' resultados de la búsqueda</div>';
-                echo "<table class='table table-bordered table-striped'>";
+                echo "<table class='table table-bordered table-striped tabla-con-bordes'>";
                 echo "<tr><th>ID Cliente</th><th>Nombre Cliente</th><th>Documento Cliente</th><th>Celular 1</th><th>Celular 2</th><th>Dirección</th><th>Correo</th><th>Acciones</th></tr>";
 
                 while ($fila = $resultado->fetch_assoc()) {

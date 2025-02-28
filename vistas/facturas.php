@@ -14,8 +14,8 @@ function mostrarTablaFacturas($resultado) {
     if ($num_filas > 0) {
         echo '<div class="alert alert-success" role="alert">' . $num_filas . ' resultados encontrados</div>';
         
-        // Iniciar tabla con estilos consistentes
-        echo "<table class='table table-bordered table-striped'>";
+        // Iniciar tabla con estilos consistentes - AHORA USANDO LA CLASE tabla-facturas
+        echo "<table class='table table-bordered table-striped tabla-facturas'>";
         echo "<thead><tr>";
         echo "<th>ID</th>";
         echo "<th>No. Factura</th>";
@@ -95,106 +95,100 @@ $cerrar_conexion = false;
     </script>
     <!-- Estilos CSS -->
     <style>
-        body {
-            background-color: #f5f5dc; /* Fondo beige */
-        }
+        /* Efectos de sombra para elementos visuales */
         .sombra {
             box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
         }
-        .table th, .table td {
+        /* Estilo para las tablas y sus bordes - ESTILOS MEJORADOS */
+        .tabla-facturas {
+            border: 1px solid #000;
+            border-collapse: collapse;
+            width: 100%;
+        }
+        .tabla-facturas th, .tabla-facturas td {
+            border: 1px solid #000;
+            padding: 8px;
             vertical-align: middle;
+        }
+        /* Asegurando que los estilos de Bootstrap no sobrescriban nuestros bordes */
+        .table-bordered.tabla-facturas th,
+        .table-bordered.tabla-facturas td {
+            border: 1px solid #000 !important;
         }
     </style>
     <!-- Bootstrap y Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- jQuery para funcionalidades dinámicas -->
+    <script src="librerias/jquery-3.2.1.min.js"></script>
 </head>
 <body>
     <!-- Encabezado de la página -->
-    <div class="container-fluid alert alert-info sombra mb-4">
-        <div class="d-flex justify-content-between align-items-center">
-            <h1>Administración de Facturas <i class="fas fa-file-invoice-dollar"></i></h1>
-            <div>
-                <a href="inicio_admin.php" class="btn btn-dark btn-sm mr-2">Regresar</a>
-                <span class="font-weight-bold">Usuario: <?php echo htmlspecialchars($_SESSION['usuario']); ?></span>
-            </div>
-        </div>
+    <div class="container-fluid alert alert-info sombra">
+        <h1>Administración de Facturas <i class="fas fa-file-invoice-dollar"></i></h1>
+        <a href="inicio_admin.php" class="btn btn-dark btn-sm">Regresar</a>
+        <span> </span><?php echo "Usuario: " . htmlspecialchars($_SESSION['usuario']); ?>
     </div>
 
-    <!-- Botón de actualizar -->
-    <div class="container-fluid mb-3">
-        <a href="#" class="btn btn-primary" onclick="location.reload();">Actualizar página</a>
+    <!-- Botones de acción principales -->
+    <div class="container-fluid">
+        <p>
+            <a href="#" class="btn btn-primary" onclick="location.reload();">Actualizar página</a>
+        </p>
     </div>
-    
     <hr>
     
-    <!-- Formularios de filtrado -->
+    <!-- Sección de filtros para búsqueda -->
     <div class="container-fluid">
-        <div class="card mb-4">
-            <div class="card-header bg-info text-white">
-                <h5 class="mb-0">Filtrar por:</h5>
-            </div>
-            <div class="card-body">
-                <div class="row">
-                    <!-- Filtrado por fecha -->
-                    <div class="col-md">
-                        <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post" class="mb-3">
-                            <div class="form-group">
-                                <label for="fecha_factura">Fecha de Factura:</label>
-                                <input type="date" id="fecha_factura" name="fecha_factura" class="form-control">
-                            </div>
-                            <button type="submit" class="btn btn-primary">Consultar</button>
-                        </form>
-                    </div>
-                    
-                    <!-- Filtrado por número de factura -->
-                    <div class="col-md">
-                        <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post" class="mb-3">
-                            <div class="form-group">
-                                <label for="no_factura">Número de Factura:</label>
-                                <input type="text" id="no_factura" name="no_factura" class="form-control">
-                            </div>
-                            <button type="submit" class="btn btn-primary">Consultar</button>
-                        </form>
-                    </div>
-                    
-                    <!-- Filtrado por cédula de cliente -->
-                    <div class="col-md">
-                        <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post" class="mb-3">
-                            <div class="form-group">
-                                <label for="doc_cliente">Cédula de Cliente:</label>
-                                <input type="text" id="doc_cliente" name="doc_cliente" class="form-control">
-                            </div>
-                            <button type="submit" class="btn btn-primary">Consultar</button>
-                        </form>
-                    </div>
-                    
-                    <!-- Filtrado por estado -->
-                    <div class="col-md">
-                        <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post" class="mb-3">
-                            <div class="form-group">
-                                <label for="estado">Estado de Factura:</label>
-                                <input type="text" id="estado" name="estado" class="form-control">
-                            </div>
-                            <button type="submit" class="btn btn-primary">Consultar</button>
-                        </form>
-                    </div>
-                    
-                    <!-- Consultar todas las facturas -->
-                    <div class="col-md">
-                        <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post" class="mb-3">
-                            <div class="form-group">
-                                <label for="todos">Consultar todas las Facturas</label>
-                                <br>
-                                <button type="submit" name="consultar_todos" class="btn btn-primary mt-4">Consultar todas</button>
-                            </div>
-                        </form>
-                    </div>
+        <div class="alert alert-info">
+            <h5>Filtrar por:</h5>
+            <div class="row">
+                <!-- Filtro por fecha -->
+                <div class="col">
+                    <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
+                        <label for="fecha_factura">Fecha de Factura:</label><br>
+                        <input type="date" id="fecha_factura" name="fecha_factura"><br><br>
+                        <input type="submit" value="Consultar" class="btn btn-primary btn-sm">
+                    </form>
+                </div>
+                
+                <!-- Filtro por número de factura -->
+                <div class="col">
+                    <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
+                        <label for="no_factura">Número de Factura:</label><br>
+                        <input type="text" id="no_factura" name="no_factura"><br><br>
+                        <input type="submit" value="Consultar" class="btn btn-primary btn-sm">
+                    </form>
+                </div>
+                
+                <!-- Filtro por cédula de cliente -->
+                <div class="col">
+                    <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
+                        <label for="doc_cliente">Cédula de Cliente:</label><br>
+                        <input type="text" id="doc_cliente" name="doc_cliente"><br><br>
+                        <input type="submit" value="Consultar" class="btn btn-primary btn-sm">
+                    </form>
+                </div>
+                
+                <!-- Filtro por estado -->
+                <div class="col">
+                    <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
+                        <label for="estado">Estado de Factura:</label><br>
+                        <input type="text" id="estado" name="estado"><br><br>
+                        <input type="submit" value="Consultar" class="btn btn-primary btn-sm">
+                    </form>
+                </div>
+                
+                <!-- Consultar todas las facturas -->
+                <div class="col">
+                    <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
+                        <label for="todos">Consultar todas las Facturas</label><br><br>
+                        <input type="submit" value="Consultar" name="consultar_todos" class="btn btn-primary btn-sm">
+                    </form>
                 </div>
             </div>
         </div>
     </div>
-    
     <hr>
     
     <!-- Sección de resultados -->

@@ -1,574 +1,346 @@
 <?php
-// Incluir el archivo de seguridad de sesión
+// Incluir archivos necesarios para la conexión a base de datos y gestión de sesiones
 include '../conexion/conexion.php';
 include '../conexion/sesion.php';
 ?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Administracion de Ventas
-</title>
+    <title>Administración de Ventas</title>
+    <!-- Inclusión de Bootstrap y Font Awesome para estilos -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <script>function confirmar(){
-        return confirm ('¿Esta seguro de elimininar el item seleccionado?')}
-    
-    </script>
-     
-    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <!-- jQuery para funcionalidades dinámicas -->
     <script src="librerias/jquery-3.2.1.min.js"></script>
     <style>
-     .sombra {
+        /* Efectos de sombra para elementos visuales */
+        .sombra {
             box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
         }
-        </style>
+        /* Estilo para las tablas y sus bordes */
+        .tabla-ventas {
+            border: 1px solid #000;
+            border-collapse: collapse;
+            width: 100%;
+        }
+        .tabla-ventas th, .tabla-ventas td {
+            border: 1px solid #000;
+            padding: 8px;
+        }
+    </style>
+    <script>
+        // Función para confirmar eliminación
+        function confirmar() {
+            return confirm('¿Está seguro de eliminar el item seleccionado?');
+        }
+        
+        // Al cargar la página, suma los valores de la columna "Valor Total Venta"
+        document.addEventListener("DOMContentLoaded", function() {
+            const valores = document.querySelectorAll('.valor-venta');
+            let suma = 0;
+            
+            valores.forEach(valor => {
+                suma += parseFloat(valor.textContent) || 0; // Suma los valores
+            });
+            
+            // Actualizar el elemento que muestra la suma total si existe
+            const sumaTotalElement = document.getElementById('suma-total');
+            if (sumaTotalElement) {
+                sumaTotalElement.textContent = suma.toFixed(2); // Muestra la suma con 2 decimales
+            }
+        });
+    </script>
 </head>
 <body>
-<div class="container-fluid alert alert-info sombra">
-    <h1>Administración de Ventas  <i class="fas fa-dollar-sign"></i></h1> <a href="inicio_admin.php"class="btn btn-dark btn-sm">Regresar</a><span> </span><?php echo "Usuario: ".$_SESSION['usuario'];?> </div>
+    <!-- Encabezado con título y botón de regreso -->
+    <div class="container-fluid alert alert-info sombra">
+        <h1>Administración de Ventas <i class="fas fa-dollar-sign"></i></h1> 
+        <a href="inicio_admin.php" class="btn btn-dark btn-sm">Regresar</a>
+        <span> </span><?php echo "Usuario: " . $_SESSION['usuario']; ?>
+    </div>
     
-
-
-<div class="container-fluid">
-
-      <p>
-        <a href="#" class="btn btn-primary" onclick="location.reload();">Actualizar página</a> 
-        <a href="devoluciones.php" class="btn btn-danger">Ver Devoluciones</a>
-      </p>
+    <!-- Botones de acción principales -->
+    <div class="container-fluid">
+        <p>
+            <a href="#" class="btn btn-primary" onclick="location.reload();">Actualizar página</a> 
+            <a href="devoluciones.php" class="btn btn-danger">Ver Devoluciones</a>
+        </p>
+    </div>
+    <hr>
     
-</div><hr>
-<div class="container-fluid">
-         <div class=" alert alert-info">
-         <h5>Filtrar por:</h5>
-    <div class="row">
-        <div class="col">
-        
-            <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
-                <label for="fecha_venta">Fecha de Venta:</label><br>
-                <input type="date" id="fecha_venta" name="fecha_venta"><br><br> <!-- Cambiado el nombre del campo -->
-                <input type="submit" value="Consultar">
-            </form>
-        </div>
-        
-        <div class="col">
-            
-            <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
-                <label for="factura_venta">Número de Factura:</label><br>
-                <input type="text" id="factura_venta" name="factura_venta_consulta"><br><br> <!-- Cambiado el nombre del campo -->
-                <input type="submit" value="Consultar">
-            </form>
-        </div>
-        <div class="col">
-            
-            <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
-                <label for="cedula_cliente">Cédula de Cliente:</label><br>
-                <input type="text" id="cedula_cliente" name="cedula_cliente_consulta"><br><br> <!-- Cambiado el nombre del campo -->
-                <input type="submit" value="Consultar">
-            </form>
-        </div>
-        <div class="col">
-            
-            <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
-                <label for="ref_producto">Referencia de producto:</label><br>
-                <input type="text" id="ref_producto" name="ref_producto"><br><br> <!-- Cambiado el nombre del campo -->
-                <input type="submit" value="Consultar">
-            </form>
-        </div>
-        <div class="col">
-            
-            <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
-                <label for="estado">Estado:</label><br>
-                <input type="text" id="estado" name="estado"><br><br> <!-- Cambiado el nombre del campo -->
-                <input type="submit" value="Consultar">
-            </form>
-        </div>
-        <div class="col">
-            
-            <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
-    <label for="todos">Consultar todas las ventas</label><br>
-    <input type="submit" value="Consultar" name="consultar_todos">
-</form>
-        </div>
-        </div>
+    <!-- Sección de filtros para búsqueda -->
+    <div class="container-fluid">
+        <div class="alert alert-info">
+            <h5>Filtrar por:</h5>
+            <div class="row">
+                <!-- Filtro por fecha de venta -->
+                <div class="col">
+                    <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
+                        <label for="fecha_venta">Fecha de Venta:</label><br>
+                        <input type="date" id="fecha_venta" name="fecha_venta"><br><br>
+                        <input type="submit" value="Consultar">
+                    </form>
+                </div>
+                
+                <!-- Filtro por número de factura -->
+                <div class="col">
+                    <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
+                        <label for="factura_venta">Número de Factura:</label><br>
+                        <input type="text" id="factura_venta" name="factura_venta_consulta"><br><br>
+                        <input type="submit" value="Consultar">
+                    </form>
+                </div>
+                
+                <!-- Filtro por cédula de cliente -->
+                <div class="col">
+                    <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
+                        <label for="cedula_cliente">Cédula de Cliente:</label><br>
+                        <input type="text" id="cedula_cliente" name="cedula_cliente_consulta"><br><br>
+                        <input type="submit" value="Consultar">
+                    </form>
+                </div>
+                
+                <!-- Filtro por referencia de producto -->
+                <div class="col">
+                    <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
+                        <label for="ref_producto">Referencia de producto:</label><br>
+                        <input type="text" id="ref_producto" name="ref_producto"><br><br>
+                        <input type="submit" value="Consultar">
+                    </form>
+                </div>
+                
+                <!-- Filtro por estado -->
+                <div class="col">
+                    <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
+                        <label for="estado">Estado:</label><br>
+                        <input type="text" id="estado" name="estado"><br><br>
+                        <input type="submit" value="Consultar">
+                    </form>
+                </div>
+                
+                <!-- Consultar todas las ventas -->
+                <div class="col">
+                    <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
+                        <label for="todos">Consultar todas las ventas</label><br>
+                        <input type="submit" value="Consultar" name="consultar_todos">
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
-</div>
-
-<hr>
-         
-<div class="container-fluid">
-
-<section id="porFactura">
-
-    <?php
-    if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        if (isset($_POST["factura_venta_consulta"])) { // Verifica si el campo específico está presente
-include '../conexion/conexion.php';
-
-            $factura_venta = $_POST['factura_venta_consulta'];
-
-            $sql = "SELECT * FROM ventas WHERE factura_venta = '$factura_venta'";
-            $resultado = $conexion->query($sql);
-            $num_filas = $resultado->num_rows;
-            if ($resultado->num_rows > 0) {
-                echo '<div class="alert alert-success" role="alert">' . $num_filas . ' resultados de la búsqueda: '. $factura_venta .'</div>';
-            
-                echo "<table class='table table-bordered table-striped'style='border: 1px solid #000; border-collapse: collapse; width: 100%;'>";
-                echo "<tr style='border: 1px solid #000;'>";
-                echo "<th style='border: 1px solid #000;'>ID Venta</th>";
-                echo "<th style='border: 1px solid #000;'>Factura Venta</th>";
-                echo "<th style='border: 1px solid #000;'>Fecha/Hora Venta</th>";
-                echo "<th style='border: 1px solid #000;'>Nombre Cliente</th>";
-                echo "<th style='border: 1px solid #000;'>Documento Cliente</th>";
-                echo "<th style='border: 1px solid #000;'>Valor Total Venta</th>";
-                echo "<th style='border: 1px solid #000;'>Asesor Venta</th>";
-                echo "<th style='border: 1px solid #000;'>Caja</th>";
-                echo "<th style='border: 1px solid #000;'>Forma de Pago</th>";
-                echo "<th style='border: 1px solid #000;'>Unidades Venta</th>";
-                echo "<th style='border: 1px solid #000;'>Referencia Producto</th>";
-                echo "<th style='border: 1px solid #000;'>Producto Venta</th>";
-                echo "<th style='border: 1px solid #000;'>Valor Producto</th>";
-                echo "<th style='border: 1px solid #000;'>Estado</th>";
-                echo "<th style='border: 1px solid #000;'>Accion</th>";
-                echo "</tr>";
-                
-                while ($fila = $resultado->fetch_assoc()) {
-                    echo "<tr style='border: 1px solid #000;'>";
-                    echo "<td style='border: 1px solid #000;'>" . $fila["id_venta"] . "</td>";
-                    echo "<td style='border: 1px solid #000;'>" . $fila["factura_venta"] . "</td>";
-                    echo "<td style='border: 1px solid #000;'>" . $fila["fecha_hora_venta"] . "</td>";
-                    echo "<td style='border: 1px solid #000;'>" . $fila["nom_cliente"] . "</td>";
-                    echo "<td style='border: 1px solid #000;'>" . $fila["doc_cliente_venta"] . "</td>";
-                    echo "<td style='border: 1px solid #000;'>" . $fila["valor_total_venta"] . "</td>";
-                    echo "<td style='border: 1px solid #000;'>" . $fila["asesor_venta"] . "</td>";
-                    echo "<td style='border: 1px solid #000;'>" . $fila["caja"] . "</td>";
-                    echo "<td style='border: 1px solid #000;'>" . $fila["forma_de_pago"] . "</td>";
-                    echo "<td style='border: 1px solid #000;'>" . $fila["unidades_venta"] . "</td>";
-                    echo "<td style='border: 1px solid #000;'>" . $fila["ref_prod_venta"] . "</td>";
-                    echo "<td style='border: 1px solid #000;'>" . $fila["producto_venta"] . "</td>";
-                    echo "<td style='border: 1px solid #000;'>" . $fila["valor_producto"] . "</td>";
-                    echo "<td style='border: 1px solid #000;'>" . $fila["estado"] . "</td>";
-                    echo "<td style='border: 1px solid #000;'>";
-                    if($fila["estado"]=="Realizada"){
-                        echo "<a href='devo_venta.php?id_venta=" . $fila['id_venta'] . "' class='btn btn-danger' '>DEVOLUCION</a>";
-                   
-                    }
-                    echo "</td>";
-                    echo "</tr>";
-                }
-                echo "</table>";
-            } else {
-                echo '<div class="alert alert-danger">No se encontraron resultados de la búsqueda.</div>';
-            }
-            $conexion->close();
-        }
-    }
-    ?>
-</section>
-</div>
-
-<div class="container-fluid">
-<section id="porCedula">
-
-    <?php
-    if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        if (isset($_POST["cedula_cliente_consulta"])) { // Verifica si el campo específico está presente
-include '../conexion/conexion.php';
-
-            $cedula_cliente = $_POST['cedula_cliente_consulta'];
-
-            $sql = "SELECT * FROM ventas WHERE doc_cliente_venta = '$cedula_cliente'";
-            $resultado = $conexion->query($sql);
-            $num_filas = $resultado->num_rows;
-            if ($resultado->num_rows > 0) {
-                echo '<div class="alert alert-success" role="alert">' . $num_filas . ' resultados de la búsqueda: '. $cedula_cliente .'</div>';
-
-                echo "<table class='table table-bordered table-striped' style='border: 1px solid #000; border-collapse: collapse; width: 100%;'>";
-                echo "<tr style='border: 1px solid #000;'>";
-                echo "<th style='border: 1px solid #000;'>ID Venta</th>";
-                echo "<th style='border: 1px solid #000;'>Factura Venta</th>";
-                echo "<th style='border: 1px solid #000;'>Fecha/Hora Venta</th>";
-                echo "<th style='border: 1px solid #000;'>Nombre Cliente</th>";
-                echo "<th style='border: 1px solid #000;'>Documento Cliente</th>";
-                echo "<th style='border: 1px solid #000;'>Valor Total Venta</th>";
-                echo "<th style='border: 1px solid #000;'>Asesor Venta</th>";
-                echo "<th style='border: 1px solid #000;'>Caja</th>";
-                echo "<th style='border: 1px solid #000;'>Forma de Pago</th>";
-                echo "<th style='border: 1px solid #000;'>Unidades Venta</th>";
-                echo "<th style='border: 1px solid #000;'>Referencia Producto</th>";
-                echo "<th style='border: 1px solid #000;'>Producto Venta</th>";
-                echo "<th style='border: 1px solid #000;'>Valor Producto</th>";
-                echo "<th style='border: 1px solid #000;'>Estado</th>";
-                echo "<th style='border: 1px solid #000;'>Acción</th>";
-                echo "</tr>";
-                
-                while ($fila = $resultado->fetch_assoc()) {
-                    echo "<tr style='border: 1px solid #000;'>";
-                    echo "<td style='border: 1px solid #000;'>" . $fila["id_venta"] . "</td>";
-                    echo "<td style='border: 1px solid #000;'>" . $fila["factura_venta"] . "</td>";
-                    echo "<td style='border: 1px solid #000;'>" . $fila["fecha_hora_venta"] . "</td>";
-                    echo "<td style='border: 1px solid #000;'>" . $fila["nom_cliente"] . "</td>";
-                    echo "<td style='border: 1px solid #000;'>" . $fila["doc_cliente_venta"] . "</td>";
-                    echo "<td style='border: 1px solid #000;'>" . $fila["valor_total_venta"] . "</td>";
-                    echo "<td style='border: 1px solid #000;'>" . $fila["asesor_venta"] . "</td>";
-                    echo "<td style='border: 1px solid #000;'>" . $fila["caja"] . "</td>";
-                    echo "<td style='border: 1px solid #000;'>" . $fila["forma_de_pago"] . "</td>";
-                    echo "<td style='border: 1px solid #000;'>" . $fila["unidades_venta"] . "</td>";
-                    echo "<td style='border: 1px solid #000;'>" . $fila["ref_prod_venta"] . "</td>";
-                    echo "<td style='border: 1px solid #000;'>" . $fila["producto_venta"] . "</td>";
-                    echo "<td style='border: 1px solid #000;'>" . $fila["valor_producto"] . "</td>";
-                    echo "<td style='border: 1px solid #000;'>" . $fila["estado"] . "</td>";
-                    echo "<td style='border: 1px solid #000;'>";
-                    if($fila["estado"]=="Realizada"){
-                        echo "<a href='devo_venta.php?id_venta=" . $fila['id_venta'] . "' class='btn btn-danger' '>DEVOLUCION</a>";
-                                       }
-                    echo "</td>";
-                    echo "</tr>";
-                }
-                echo "</table>";
-            } else {
-                echo '<div class="alert alert-danger">No se encontraron resultados de la búsqueda.</div>';
-            }
-            $conexion->close();
-        }
-    }
-    ?>
-</section>
-
-</div>
-
-<div class="container-fluid">
-
-<section id="porReferencia">
-
-    <?php
-    if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        if (isset($_POST["ref_producto"])) { // Verifica si el campo específico está presente
-include '../conexion/conexion.php';
-
-            $ref_producto = $_POST['ref_producto'];
-
-            $sql = "SELECT * FROM ventas WHERE ref_prod_venta = '$ref_producto'";
-            $resultado = $conexion->query($sql);
-            $num_filas = $resultado->num_rows;
-            if ($resultado->num_rows > 0) {
-                echo '<div class="alert alert-success" role="alert">' . $num_filas . ' resultados de la búsqueda: '. $ref_producto .'</div>';
-
-                echo "<table class='table table-bordered table-striped' style='border: 1px solid #000; border-collapse: collapse; width: 100%;'>";
-                echo "<tr style='border: 1px solid #000;'>";
-                echo "<th style='border: 1px solid #000;'>ID Venta</th>";
-                echo "<th style='border: 1px solid #000;'>Factura Venta</th>";
-                echo "<th style='border: 1px solid #000;'>Fecha/Hora Venta</th>";
-                echo "<th style='border: 1px solid #000;'>Nombre Cliente</th>";
-                echo "<th style='border: 1px solid #000;'>Documento Cliente</th>";
-                echo "<th style='border: 1px solid #000;'>Valor Total Venta</th>";
-                echo "<th style='border: 1px solid #000;'>Asesor Venta</th>";
-                echo "<th style='border: 1px solid #000;'>Caja</th>";
-                echo "<th style='border: 1px solid #000;'>Forma de Pago</th>";
-                echo "<th style='border: 1px solid #000;'>Unidades Venta</th>";
-                echo "<th style='border: 1px solid #000;'>Referencia Producto</th>";
-                echo "<th style='border: 1px solid #000;'>Producto Venta</th>";
-                echo "<th style='border: 1px solid #000;'>Valor Producto</th>";
-                echo "<th style='border: 1px solid #000;'>Estado</th>";
-                echo "<th style='border: 1px solid #000;'>Acción</th>";
-                echo "</tr>";
-                
-                while ($fila = $resultado->fetch_assoc()) {
-                    echo "<tr style='border: 1px solid #000;'>";
-                    echo "<td style='border: 1px solid #000;'>" . $fila["id_venta"] . "</td>";
-                    echo "<td style='border: 1px solid #000;'>" . $fila["factura_venta"] . "</td>";
-                    echo "<td style='border: 1px solid #000;'>" . $fila["fecha_hora_venta"] . "</td>";
-                    echo "<td style='border: 1px solid #000;'>" . $fila["nom_cliente"] . "</td>";
-                    echo "<td style='border: 1px solid #000;'>" . $fila["doc_cliente_venta"] . "</td>";
-                    echo "<td style='border: 1px solid #000;'>" . $fila["valor_total_venta"] . "</td>";
-                    echo "<td style='border: 1px solid #000;'>" . $fila["asesor_venta"] . "</td>";
-                    echo "<td style='border: 1px solid #000;'>" . $fila["caja"] . "</td>";
-                    echo "<td style='border: 1px solid #000;'>" . $fila["forma_de_pago"] . "</td>";
-                    echo "<td style='border: 1px solid #000;'>" . $fila["unidades_venta"] . "</td>";
-                    echo "<td style='border: 1px solid #000;'>" . $fila["ref_prod_venta"] . "</td>";
-                    echo "<td style='border: 1px solid #000;'>" . $fila["producto_venta"] . "</td>";
-                    echo "<td style='border: 1px solid #000;'>" . $fila["valor_producto"] . "</td>";
-                    echo "<td style='border: 1px solid #000;'>" . $fila["estado"] . "</td>";
-                    echo "<td style='border: 1px solid #000;'>";
-                    if($fila["estado"]=="Realizada"){
-                        echo "<a href='devo_venta.php?id_venta=" . $fila['id_venta'] . "' class='btn btn-danger' '>DEVOLUCION</a>";
-                                       }
-                    echo "</td>";
-                    echo "</tr>";
-                }
-                echo "</table>";
-            } else {
-                echo '<div class="alert alert-danger">No se encontraron resultados de la búsqueda.</div>';
-            }
-            $conexion->close();
-        }
-    }
-    ?>
-</section>
-</div>
-
-
-<div class="container-fluid">
-
-<section id="porFecha">
-
-    <?php
-    if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        if (isset($_POST["fecha_venta"])) { // Verifica si el campo específico está presente
-include '../conexion/conexion.php';
-
-            $fecha_venta = $_POST['fecha_venta'];
-
-            $sql = "SELECT * FROM ventas WHERE DATE(fecha_hora_venta) = '$fecha_venta'";
-
-            $resultado = $conexion->query($sql);
-            $num_filas = $resultado->num_rows;
-            if ($resultado->num_rows > 0) {
-                echo '<div class="alert alert-success" role="alert">' . $num_filas . ' resultados de la búsqueda: '. $fecha_venta .'</div>';
-
-                echo "<table class='table table-bordered table-striped' style='border: 1px solid #000; border-collapse: collapse; width: 100%;'>";
-                echo "<tr style='border: 1px solid #000;'>";
-                echo "<th style='border: 1px solid #000;'>ID Venta</th>";
-                echo "<th style='border: 1px solid #000;'>Factura Venta</th>";
-                echo "<th style='border: 1px solid #000;'>Fecha/Hora Venta</th>";
-                echo "<th style='border: 1px solid #000;'>Nombre Cliente</th>";
-                echo "<th style='border: 1px solid #000;'>Documento Cliente</th>";
-                echo "<th style='border: 1px solid #000;'>Valor Total Venta</th>";
-                echo "<th style='border: 1px solid #000;'>Asesor Venta</th>";
-                echo "<th style='border: 1px solid #000;'>Caja</th>";
-                echo "<th style='border: 1px solid #000;'>Forma de Pago</th>";
-                echo "<th style='border: 1px solid #000;'>Unidades Venta</th>";
-                echo "<th style='border: 1px solid #000;'>Referencia Producto</th>";
-                echo "<th style='border: 1px solid #000;'>Producto Venta</th>";
-                echo "<th style='border: 1px solid #000;'>Valor Producto</th>";
-                echo "<th style='border: 1px solid #000;'>Estado</th>";
-                echo "<th style='border: 1px solid #000;'>Acción</th>";
-                echo "</tr>";
-                
-                while ($fila = $resultado->fetch_assoc()) {
-                    echo "<tr style='border: 1px solid #000;'>";
-                    echo "<td style='border: 1px solid #000;'>" . $fila["id_venta"] . "</td>";
-                    echo "<td style='border: 1px solid #000;'>" . $fila["factura_venta"] . "</td>";
-                    echo "<td style='border: 1px solid #000;'>" . $fila["fecha_hora_venta"] . "</td>";
-                    echo "<td style='border: 1px solid #000;'>" . $fila["nom_cliente"] . "</td>";
-                    echo "<td style='border: 1px solid #000;'>" . $fila["doc_cliente_venta"] . "</td>";
-                    echo "<td style='border: 1px solid #000;'>" . $fila["valor_total_venta"] . "</td>";
-                    echo "<td style='border: 1px solid #000;'>" . $fila["asesor_venta"] . "</td>";
-                    echo "<td style='border: 1px solid #000;'>" . $fila["caja"] . "</td>";
-                    echo "<td style='border: 1px solid #000;'>" . $fila["forma_de_pago"] . "</td>";
-                    echo "<td style='border: 1px solid #000;'>" . $fila["unidades_venta"] . "</td>";
-                    echo "<td style='border: 1px solid #000;'>" . $fila["ref_prod_venta"] . "</td>";
-                    echo "<td style='border: 1px solid #000;'>" . $fila["producto_venta"] . "</td>";
-                    echo "<td style='border: 1px solid #000;'>" . $fila["valor_producto"] . "</td>";
-                    echo "<td style='border: 1px solid #000;'>" . $fila["estado"] . "</td>";
-                    echo "<td style='border: 1px solid #000;'>";
-                    if($fila["estado"]=="Realizada"){
-                        echo "<a href='devo_venta.php?id_venta=" . $fila['id_venta'] . "' class='btn btn-danger' '>DEVOLUCION</a>";
-                                       }
-                    echo "</td>";
-                    echo "</tr>";
-                }
-                echo "</table>";
-            } else {
-                echo '<div class="alert alert-danger">No se encontraron resultados de la búsqueda.</div>';
-            }
-            $conexion->close();
-        }
-    }
-    ?>
-</section>
-</div>
-
-<div class="container-fluid">
-
-<section id="todos">
-
-<?php
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['consultar_todos'])) {
-    // Verifica si el campo específico está presente
-    include '../conexion/conexion.php';
-   
-    // Consulta SQL para sumar la columna 'valor_total_venta' en la tabla 'ventas'
-    $sql = "SELECT SUM(valor_total_venta) AS total_ventas FROM ventas";
-    $resultado = $conexion->query($sql);
+    <hr>
     
-    // Verificar si se obtuvo un resultado
-    if ($resultado->num_rows > 0) {
-        // Obtener el valor total de las ventas
-        $fila = $resultado->fetch_assoc();
-        $totalVentas = $fila['total_ventas'];
-        
-        // Mostrar el valor total de las ventas
-        echo '<div class="alert alert-success" role="alert">';
-        echo 'El valor total de las ventas es: $' . number_format($totalVentas, 0);
-        echo '</div>';
-    } else {
-        echo '<div class="alert alert-warning" role="alert">';
-        echo "No se encontraron registros en la tabla de ventas.";
-        echo '</div>';
-    }
-
-    $sql = "SELECT * FROM ventas";
-
-    $resultado = $conexion->query($sql);
-    $num_filas = $resultado->num_rows;
-  
-    if ($resultado->num_rows > 0) {
-        
-        echo '<div class="alert alert-success" role="alert">' . $num_filas . ' resultados de la búsqueda</div>';
-        echo "<table class='table table-bordered table-striped' style='border: 1px solid #000; border-collapse: collapse; width: 100%;'>";
-        echo "<tr style='border: 1px solid #000;'>";
-        echo "<th style='border: 1px solid #000;'>ID Venta</th>";
-        echo "<th style='border: 1px solid #000;'>Factura Venta</th>";
-        echo "<th style='border: 1px solid #000;'>Fecha/Hora Venta</th>";
-        echo "<th style='border: 1px solid #000;'>Nombre Cliente</th>";
-        echo "<th style='border: 1px solid #000;'>Documento Cliente</th>";
-        echo "<th style='border: 1px solid #000;'>Valor Total Venta</th>";
-        echo "<th style='border: 1px solid #000;'>Asesor Venta</th>";
-        echo "<th style='border: 1px solid #000;'>Caja</th>";
-        echo "<th style='border: 1px solid #000;'>Forma de Pago</th>";
-        echo "<th style='border: 1px solid #000;'>Unidades Venta</th>";
-        echo "<th style='border: 1px solid #000;'>Referencia Producto</th>";
-        echo "<th style='border: 1px solid #000;'>Producto Venta</th>";
-        echo "<th style='border: 1px solid #000;'>Valor Producto</th>";
-        echo "<th style='border: 1px solid #000;'>Estado</th>";
-        echo "<th style='border: 1px solid #000;'>Acción</th>";
+    <?php
+    // Función para generar encabezados de tabla
+    function generarEncabezadosTabla() {
+        echo "<table class='table table-bordered table-striped tabla-ventas'>";
+        echo "<tr>";
+        echo "<th>ID Venta</th>";
+        echo "<th>Factura Venta</th>";
+        echo "<th>Fecha/Hora Venta</th>";
+        echo "<th>Nombre Cliente</th>";
+        echo "<th>Documento Cliente</th>";
+        echo "<th>Valor Total Venta</th>";
+        echo "<th>Asesor Venta</th>";
+        echo "<th>Caja</th>";
+        echo "<th>Forma de Pago</th>";
+        echo "<th>Unidades Venta</th>";
+        echo "<th>Referencia Producto</th>";
+        echo "<th>Producto Venta</th>";
+        echo "<th>Valor Producto</th>";
+        echo "<th>Estado</th>";
+        echo "<th>Acción</th>";
         echo "</tr>";
-        
-        $suma_total = 0; // Inicializa la suma total
+    }
+    
+    // Función para generar filas de tabla con datos
+    function generarFilasTabla($resultado) {
+        $suma_total = 0;
         
         while ($fila = $resultado->fetch_assoc()) {
-            echo "<tr style='border: 1px solid #000;'>";
-            echo "<td style='border: 1px solid #000;'>" . $fila["id_venta"] . "</td>";
-            echo "<td style='border: 1px solid #000;'>" . $fila["factura_venta"] . "</td>";
-            echo "<td style='border: 1px solid #000;'>" . $fila["fecha_hora_venta"] . "</td>";
-            echo "<td style='border: 1px solid #000;'>" . $fila["nom_cliente"] . "</td>";
-            echo "<td style='border: 1px solid #000;'>" . $fila["doc_cliente_venta"] . "</td>";
-            echo "<td style='border: 1px solid #000;'>" . $fila["valor_total_venta"] . "</td>";
-            echo "<td style='border: 1px solid #000;'>" . $fila["asesor_venta"] . "</td>";
-            echo "<td style='border: 1px solid #000;'>" . $fila["caja"] . "</td>";
-            echo "<td style='border: 1px solid #000;'>" . $fila["forma_de_pago"] . "</td>";
-            echo "<td style='border: 1px solid #000;'>" . $fila["unidades_venta"] . "</td>";
-            echo "<td style='border: 1px solid #000;'>" . $fila["ref_prod_venta"] . "</td>";
-            echo "<td style='border: 1px solid #000;'>" . $fila["producto_venta"] . "</td>";
-            echo "<td style='border: 1px solid #000;'>" . $fila["valor_producto"] . "</td>";
-            echo "<td style='border: 1px solid #000;'>" . $fila["estado"] . "</td>";
-            echo "<td style='border: 1px solid #000;'>";
-            if($fila["estado"]=="Realizada"){
-                echo "<a href='devo_venta.php?id_venta=" . $fila['id_venta'] . "' class='btn btn-danger' '>DEVOLUCION</a>";
+            echo "<tr>";
+            echo "<td>" . $fila["id_venta"] . "</td>";
+            echo "<td>" . $fila["factura_venta"] . "</td>";
+            echo "<td>" . $fila["fecha_hora_venta"] . "</td>";
+            echo "<td>" . $fila["nom_cliente"] . "</td>";
+            echo "<td>" . $fila["doc_cliente_venta"] . "</td>";
+            echo "<td class='valor-venta'>" . $fila["valor_total_venta"] . "</td>";
+            echo "<td>" . $fila["asesor_venta"] . "</td>";
+            echo "<td>" . $fila["caja"] . "</td>";
+            echo "<td>" . $fila["forma_de_pago"] . "</td>";
+            echo "<td>" . $fila["unidades_venta"] . "</td>";
+            echo "<td>" . $fila["ref_prod_venta"] . "</td>";
+            echo "<td>" . $fila["producto_venta"] . "</td>";
+            echo "<td>" . $fila["valor_producto"] . "</td>";
+            echo "<td>" . $fila["estado"] . "</td>";
+            echo "<td>";
+            if ($fila["estado"] == "Realizada") {
+                echo "<a href='devo_venta.php?id_venta=" . $fila['id_venta'] . "' class='btn btn-danger'>DEVOLUCIÓN</a>";
             }
             echo "</td>";
             echo "</tr>";
             
-            $suma_total += floatval($fila["valor_total_venta"]); // Suma el valor total de la venta
+            $suma_total += floatval($fila["valor_total_venta"]);
         }
         
         // Agregar fila para la suma total
-        echo "<tr style='border: 1px solid #000;'>";
-        echo "<td colspan='5' style='border: 1px solid #000; text-align: right;'><strong>Suma Total:</strong></td>";
-        echo "<td style='border: 1px solid #000;'><strong>" . number_format($suma_total, 2) . "</strong></td>";
-        echo "<td colspan='9' style='border: 1px solid #000;'></td>";
+        echo "<tr>";
+        echo "<td colspan='5' style='text-align: right;'><strong>Suma Total:</strong></td>";
+        echo "<td><strong id='suma-total'>" . number_format($suma_total, 2) . "</strong></td>";
+        echo "<td colspan='9'></td>";
         echo "</tr>";
         
         echo "</table>";
-    } else {
-        echo '<div class="alert alert-danger">No se encontraron resultados de la búsqueda.</div>';
+        
+        return $suma_total;
     }
-    $conexion->close();
-}
-?>  </section>
-</div>
-<section id="porEstado">
-<div class="container-fluid">
-
-<?php
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    if (isset($_POST["estado"])) { // Verifica si el campo específico está presente
+    
+    // Función para mostrar mensajes de alerta
+    function mostrarAlerta($tipo, $mensaje) {
+        echo "<div class='alert alert-$tipo' role='alert'>$mensaje</div>";
+    }
+    
+    // Procesar formularios POST
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
         include '../conexion/conexion.php';
-
-        $estado = $_POST['estado'];
-
-        $sql = "SELECT * FROM ventas WHERE estado = '$estado'";
-        $resultado = $conexion->query($sql);
-        $num_filas = $resultado->num_rows;
-        if ($resultado->num_rows > 0) {
-            echo '<div class="alert alert-success" role="alert">'. $num_filas .' resultados de la búsqueda: ' . $estado  . ' </div>';
-
-            echo "<table class='table table-bordered table-striped' style='border: 1px solid #000; border-collapse: collapse; width: 100%;'>";
-            echo "<tr style='border: 1px solid #000;'>";
-            echo "<th style='border: 1px solid #000;'>ID Venta</th>";
-            echo "<th style='border: 1px solid #000;'>Factura Venta</th>";
-            echo "<th style='border: 1px solid #000;'>Fecha/Hora Venta</th>";
-            echo "<th style='border: 1px solid #000;'>Nombre Cliente</th>";
-            echo "<th style='border: 1px solid #000;'>Documento Cliente</th>";
-            echo "<th style='border: 1px solid #000;'>Valor Total Venta</th>";
-            echo "<th style='border: 1px solid #000;'>Asesor Venta</th>";
-            echo "<th style='border: 1px solid #000;'>Caja</th>";
-            echo "<th style='border: 1px solid #000;'>Forma de Pago</th>";
-            echo "<th style='border: 1px solid #000;'>Unidades Venta</th>";
-            echo "<th style='border: 1px solid #000;'>Referencia Producto</th>";
-            echo "<th style='border: 1px solid #000;'>Producto Venta</th>";
-            echo "<th style='border: 1px solid #000;'>Valor Producto</th>";
-            echo "<th style='border: 1px solid #000;'>Estado</th>";
-            echo "<th style='border: 1px solid #000;'>Acción</th>";
-            echo "</tr>";
-            $suma_total = 0; // Inicializa la suma total
-
-            while ($fila = $resultado->fetch_assoc()) {
-                echo "<tr style='border: 1px solid #000;'>";
-                echo "<td style='border: 1px solid #000;'>" . $fila["id_venta"] . "</td>";
-                echo "<td style='border: 1px solid #000;'>" . $fila["factura_venta"] . "</td>";
-                echo "<td style='border: 1px solid #000;'>" . $fila["fecha_hora_venta"] . "</td>";
-                echo "<td style='border: 1px solid #000;'>" . $fila["nom_cliente"] . "</td>";
-                echo "<td style='border: 1px solid #000;'>" . $fila["doc_cliente_venta"] . "</td>";
-                echo "<td style='border: 1px solid #000;'>" . $fila["valor_total_venta"] . "</td>";
-                echo "<td style='border: 1px solid #000;'>" . $fila["asesor_venta"] . "</td>";
-                echo "<td style='border: 1px solid #000;'>" . $fila["caja"] . "</td>";
-                echo "<td style='border: 1px solid #000;'>" . $fila["forma_de_pago"] . "</td>";
-                echo "<td style='border: 1px solid #000;'>" . $fila["unidades_venta"] . "</td>";
-                echo "<td style='border: 1px solid #000;'>" . $fila["ref_prod_venta"] . "</td>";
-                echo "<td style='border: 1px solid #000;'>" . $fila["producto_venta"] . "</td>";
-                echo "<td style='border: 1px solid #000;'>" . $fila["valor_producto"] . "</td>";
-                echo "<td style='border: 1px solid #000;'>" . $fila["estado"] . "</td>";
-                echo "<td style='border: 1px solid #000;'>";
-                if($fila["estado"]=="Realizada"){
-                    echo "<a href='devo_venta.php?id_venta=" . $fila['id_venta'] . "' class='btn btn-danger' '>DEVOLUCION</a>";
-                }
-                echo "</td>";
-                echo "</tr>";
-                $suma_total += floatval($fila["valor_total_venta"]); // Suma el valor total de la venta
+        
+        // Consulta por número de factura
+        if (isset($_POST["factura_venta_consulta"])) {
+            $factura_venta = $_POST['factura_venta_consulta'];
+            $sql = "SELECT * FROM ventas WHERE factura_venta = '$factura_venta'";
+            $resultado = $conexion->query($sql);
+            $num_filas = $resultado->num_rows;
+            
+            echo "<div class='container-fluid'><section id='porFactura'>";
+            
+            if ($num_filas > 0) {
+                mostrarAlerta("success", "$num_filas resultados de la búsqueda: $factura_venta");
+                generarEncabezadosTabla();
+                generarFilasTabla($resultado);
+            } else {
+                mostrarAlerta("danger", "No se encontraron resultados de la búsqueda.");
             }
-            // Agregar fila para la suma total
-            echo "<tr style='border: 1px solid #000;'>";
-            echo "<td colspan='5' style='border: 1px solid #000; text-align: right;'><strong>Suma Total:</strong></td>";
-            echo "<td style='border: 1px solid #000;'><strong>" . number_format($suma_total, 2) . "</strong></td>";
-            echo "<td colspan='9' style='border: 1px solid #000;'></td>";
-            echo "</tr>";
-            echo "</table>";
-        } else {
-            echo '<div class="alert alert-danger">No se encontraron resultados de la búsqueda.</div>';
+            
+            echo "</section></div>";
         }
+        
+        // Consulta por cédula de cliente
+        else if (isset($_POST["cedula_cliente_consulta"])) {
+            $cedula_cliente = $_POST['cedula_cliente_consulta'];
+            $sql = "SELECT * FROM ventas WHERE doc_cliente_venta = '$cedula_cliente'";
+            $resultado = $conexion->query($sql);
+            $num_filas = $resultado->num_rows;
+            
+            echo "<div class='container-fluid'><section id='porCedula'>";
+            
+            if ($num_filas > 0) {
+                mostrarAlerta("success", "$num_filas resultados de la búsqueda: $cedula_cliente");
+                generarEncabezadosTabla();
+                generarFilasTabla($resultado);
+            } else {
+                mostrarAlerta("danger", "No se encontraron resultados de la búsqueda.");
+            }
+            
+            echo "</section></div>";
+        }
+        
+        // Consulta por referencia de producto
+        else if (isset($_POST["ref_producto"])) {
+            $ref_producto = $_POST['ref_producto'];
+            $sql = "SELECT * FROM ventas WHERE ref_prod_venta = '$ref_producto'";
+            $resultado = $conexion->query($sql);
+            $num_filas = $resultado->num_rows;
+            
+            echo "<div class='container-fluid'><section id='porReferencia'>";
+            
+            if ($num_filas > 0) {
+                mostrarAlerta("success", "$num_filas resultados de la búsqueda: $ref_producto");
+                generarEncabezadosTabla();
+                generarFilasTabla($resultado);
+            } else {
+                mostrarAlerta("danger", "No se encontraron resultados de la búsqueda.");
+            }
+            
+            echo "</section></div>";
+        }
+        
+        // Consulta por fecha de venta
+        else if (isset($_POST["fecha_venta"])) {
+            $fecha_venta = $_POST['fecha_venta'];
+            $sql = "SELECT * FROM ventas WHERE DATE(fecha_hora_venta) = '$fecha_venta'";
+            $resultado = $conexion->query($sql);
+            $num_filas = $resultado->num_rows;
+            
+            echo "<div class='container-fluid'><section id='porFecha'>";
+            
+            if ($num_filas > 0) {
+                mostrarAlerta("success", "$num_filas resultados de la búsqueda: $fecha_venta");
+                generarEncabezadosTabla();
+                generarFilasTabla($resultado);
+            } else {
+                mostrarAlerta("danger", "No se encontraron resultados de la búsqueda.");
+            }
+            
+            echo "</section></div>";
+        }
+        
+        // Consulta por estado
+        else if (isset($_POST["estado"])) {
+            $estado = $_POST['estado'];
+            $sql = "SELECT * FROM ventas WHERE estado = '$estado'";
+            $resultado = $conexion->query($sql);
+            $num_filas = $resultado->num_rows;
+            
+            echo "<div class='container-fluid'><section id='porEstado'>";
+            
+            if ($num_filas > 0) {
+                mostrarAlerta("success", "$num_filas resultados de la búsqueda: $estado");
+                generarEncabezadosTabla();
+                generarFilasTabla($resultado);
+            } else {
+                mostrarAlerta("danger", "No se encontraron resultados de la búsqueda.");
+            }
+            
+            echo "</section></div>";
+        }
+        
+        // Consultar todas las ventas
+        else if (isset($_POST['consultar_todos'])) {
+            echo "<div class='container-fluid'><section id='todos'>";
+            
+            // Consulta para obtener el total de ventas
+            $sql_suma = "SELECT SUM(valor_total_venta) AS total_ventas FROM ventas";
+            $resultado_suma = $conexion->query($sql_suma);
+            
+            if ($resultado_suma->num_rows > 0) {
+                $fila_suma = $resultado_suma->fetch_assoc();
+                $totalVentas = $fila_suma['total_ventas'];
+                mostrarAlerta("success", "El valor total de las ventas es: $" . number_format($totalVentas, 0));
+            } else {
+                mostrarAlerta("warning", "No se encontraron registros en la tabla de ventas.");
+            }
+            
+            // Consulta para obtener todos los registros
+            $sql = "SELECT * FROM ventas";
+            $resultado = $conexion->query($sql);
+            $num_filas = $resultado->num_rows;
+            
+            if ($num_filas > 0) {
+                mostrarAlerta("success", "$num_filas resultados de la búsqueda");
+                generarEncabezadosTabla();
+                generarFilasTabla($resultado);
+            } else {
+                mostrarAlerta("danger", "No se encontraron resultados de la búsqueda.");
+            }
+            
+            echo "</section></div>";
+        }
+        
         $conexion->close();
     }
-}
-?>    </div>
-</section>        
-
+    ?>
 </body>
 </html>
-<script>
-    // Al cargar la página, suma los valores de la columna "Valor Total Venta"
-    document.addEventListener("DOMContentLoaded", function() {
-        const valores = document.querySelectorAll('.valor-venta');
-        let suma = 0;
-        
-        valores.forEach(valor => {
-            suma += parseFloat(valor.textContent) || 0; // Suma los valores
-        });
-        
-        document.getElementById('suma-total').textContent = suma.toFixed(2); // Muestra la suma con 2 decimales
-    });
-    
