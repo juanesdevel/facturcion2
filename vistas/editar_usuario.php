@@ -60,6 +60,7 @@ if(isset($_POST['submit'])){
     $nombre = $fila["nombre_usuario"];
     $rol = $fila["rol_usuario"];
     $codigo = $fila["codigo_usuario"];
+    $password_actual = $fila["contrasena_usuario"]; // Obtenemos la contraseña actual
     $stmt->close();
 }
 ?>
@@ -92,6 +93,12 @@ if(isset($_POST['submit'])){
             </div>
             
             <div class="form-group">
+                <label for="passwordActual">Contraseña Actual (hash):</label>
+                <input type="text" class="form-control" id="passwordActual" value="<?= htmlspecialchars($password_actual) ?>" readonly>
+                <small class="form-text text-muted">Nota: Se muestra el hash de la contraseña, no el texto original.</small>
+            </div>
+            
+            <div class="form-group">
                 <label for="rolUsuario">Rol de Usuario:</label>
                 <select class="form-control" id="rolUsuario" name="rolUsuario" required>
                     <option value="bloqueado" <?= $rol == 'bloqueado' ? 'selected' : '' ?>>Bloqueado</option>
@@ -101,7 +108,7 @@ if(isset($_POST['submit'])){
             </div>
             
             <div class="form-group">
-                <label for="password">Contraseña (dejar en blanco para no cambiar):</label>
+                <label for="password">Nueva Contraseña (dejar en blanco para no cambiar):</label>
                 <input type="password" class="form-control" id="password" name="password">
                 <small id="passwordError" class="form-text text-danger"></small>
             </div>

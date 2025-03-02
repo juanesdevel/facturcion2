@@ -148,7 +148,7 @@ $cerrar_conexion = false;
                     <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
                         <label for="fecha_factura">Fecha de Factura:</label><br>
                         <input type="date" id="fecha_factura" name="fecha_factura"><br><br>
-                        <input type="submit" value="Consultar" class="btn btn-primary btn-sm">
+                        <input type="submit" value="Consulta">
                     </form>
                 </div>
                 
@@ -157,7 +157,7 @@ $cerrar_conexion = false;
                     <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
                         <label for="no_factura">Número de Factura:</label><br>
                         <input type="text" id="no_factura" name="no_factura"><br><br>
-                        <input type="submit" value="Consultar" class="btn btn-primary btn-sm">
+                        <input type="submit" value="Consultar">
                     </form>
                 </div>
                 
@@ -166,7 +166,7 @@ $cerrar_conexion = false;
                     <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
                         <label for="doc_cliente">Cédula de Cliente:</label><br>
                         <input type="text" id="doc_cliente" name="doc_cliente"><br><br>
-                        <input type="submit" value="Consultar" class="btn btn-primary btn-sm">
+                        <input type="submit" value="Consultar">
                     </form>
                 </div>
                 
@@ -175,7 +175,7 @@ $cerrar_conexion = false;
                     <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
                         <label for="estado">Estado de Factura:</label><br>
                         <input type="text" id="estado" name="estado"><br><br>
-                        <input type="submit" value="Consultar" class="btn btn-primary btn-sm">
+                        <input type="submit" value="Consultar">
                     </form>
                 </div>
                 
@@ -183,7 +183,7 @@ $cerrar_conexion = false;
                 <div class="col">
                     <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
                         <label for="todos">Consultar todas las Facturas</label><br><br>
-                        <input type="submit" value="Consultar" name="consultar_todos" class="btn btn-primary btn-sm">
+                        <input type="submit" value="Consultar" name="consultar_todos">
                     </form>
                 </div>
             </div>

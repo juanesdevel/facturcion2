@@ -107,7 +107,7 @@ if (isset($_POST['backup'])) {
                 <h2>
                     Este opción genera un backup de toda la base de datos en formato SQL. 
                     Si requiere restaurar los datos con algún backup obtenido, se debe comunicar con soporte técnico.
-                    Para más información comuníquese con soporte@desarrollalo.com
+                    Para más información comuníquese con juan_egallegoc@soy.sena.edu.co
                 </h2>
             </div>
         </div>

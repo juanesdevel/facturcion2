@@ -116,7 +116,7 @@ if(isset($_POST['fecha_devo'])){
         <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST">
             <div class="form-group">
                 <label for="fecha_devo">Fecha Devolución:</label>
-                <input type="date" class="form-control" id="fecha_devo" name="fecha_devo" required>
+                <input type="datetime-local" class="form-control" id="fecha_devo" name="fecha_devo" required>
             </div>
             <div class="form-group">
                 <label for="usuario_devo">Usuario Devolución:</label>
@@ -165,15 +165,16 @@ if(isset($_POST['fecha_devo'])){
 </body>
 </html>
 <script>
-// Obtener la fecha actual
+// Obtener la fecha y hora actual
 const fechaActual = new Date();
 
-// Restar un día a la fecha actual para obtener la fecha de ayer
-const fechaAyer = new Date(fechaActual);
-fechaAyer.setDate(fechaActual.getDate() - 1);
+// Formatear la fecha y hora en 'YYYY-MM-DD HH:MM'
+const fechaFormateada = fechaActual.toISOString().split('T')[0]; // Obtiene 'YYYY-MM-DD'
+const horaFormateada = fechaActual.toTimeString().split(' ')[0].slice(0, 5); // Obtiene 'HH:MM'
 
-// Formatear la fecha de ayer en formato 'YYYY-MM-DD'
-const fechaAyerFormateada = fechaAyer.toISOString().split('T')[0];
+// Combinar fecha y hora
+const fechaHoraFormateada = `${fechaFormateada} ${horaFormateada}`;
 
-// Establecer el valor predeterminado en el campo de fecha
-document.getElementById('fecha_devo').value = fechaAyerFormateada;</script>
+// Establecer el valor predeterminado en el campo de fecha y hora
+document.getElementById('fecha_devo').value = fechaHoraFormateada;
+<script>
