@@ -5,14 +5,15 @@ include '../conexion/sesion.php';
 $errors = [];
 
 if(isset($_POST['submit'])){
-    // Sanitize and validate input
+    // Sanitizar y validar la entrada
     $id_usuario = filter_input(INPUT_POST, 'idUsuario', FILTER_SANITIZE_NUMBER_INT);
     $codigo = filter_input(INPUT_POST, 'codigoUsuario', FILTER_SANITIZE_STRING);
     $nombre = filter_input(INPUT_POST, 'nombreUsuario', FILTER_SANITIZE_STRING);
-    $password = $_POST['password']; // Don't sanitize password to preserve complexity
+    $password = $_POST['password']; // Contraseña principal
+    $confirm_password = $_POST['confirm_password']; // Confirmación de contraseña
     $rol = filter_input(INPUT_POST, 'rolUsuario', FILTER_SANITIZE_STRING);
 
-    // Validate input
+    // Validar la entrada
     if (!preg_match('/^[A-Za-z\s]{1,40}$/', $nombre)) {
         $errors[] = "El nombre no debe contener números, ni caracteres especiales y debe tener máximo 40 caracteres.";
     }
@@ -22,34 +23,33 @@ if(isset($_POST['submit'])){
     if (!in_array($rol, ['bloqueado', 'asesor', 'admin'])) {
         $errors[] = "Rol de usuario no válido.";
     }
-    if (!empty($password) && !preg_match('/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{4,12}$/', $password)) {
+    if (!preg_match('/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{4,12}$/', $password)) {
         $errors[] = "La contraseña debe contener entre 4 y 12 caracteres, incluyendo números y letras.";
+    }
+    if ($password !== $confirm_password) {
+        $errors[] = "Las contraseñas no coinciden.";
     }
 
     if (empty($errors)) {
-        // Prepare SQL statement
-        if (!empty($password)) {
-            $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-            $sql = "UPDATE usuarios SET nombre_usuario=?, rol_usuario=?, codigo_usuario=?, contrasena_usuario=? WHERE id_usuario=?";
-            $stmt = $conexion->prepare($sql);
-            $stmt->bind_param("ssssi", $nombre, $rol, $codigo, $hashed_password, $id_usuario);
-        } else {
-            $sql = "UPDATE usuarios SET nombre_usuario=?, rol_usuario=?, codigo_usuario=? WHERE id_usuario=?";
-            $stmt = $conexion->prepare($sql);
-            $stmt->bind_param("sssi", $nombre, $rol, $codigo, $id_usuario);
-        }
+        // Preparar la consulta SQL sin hashear la contraseña
+        $sql = "UPDATE usuarios SET nombre_usuario=?, rol_usuario=?, codigo_usuario=?, contrasena_usuario=? WHERE id_usuario=?";
+        $stmt = $conexion->prepare($sql);
+        $stmt->bind_param("ssssi", $nombre, $rol, $codigo, $password, $id_usuario);
 
+        // Ejecutar la consulta
         if ($stmt->execute()) {
             echo "<script>alert('Los datos fueron actualizados correctamente'); location.assign('usuario.php');</script>";
         } else {
-            echo "<script>alert('ERROR: Los datos no fueron actualizados'); location.assign('usuario.php');</script>";
+            // Mostrar error específico para depuración
+            echo "<script>alert('ERROR: Los datos no fueron actualizados. Detalle: " . $stmt->error . "'); location.assign('usuario.php');</script>";
         }
         $stmt->close();
     } else {
-        // Display errors
+        // Mostrar errores de validación
         echo "<script>alert('Errores de validación:\\n" . implode("\\n", $errors) . "');</script>";
     }
 } else {
+    // Si no es un envío de formulario, obtenemos los datos del usuario
     $id_usuario = filter_input(INPUT_GET, 'id_usuario', FILTER_SANITIZE_NUMBER_INT);
     $sql = "SELECT * FROM usuarios WHERE id_usuario=?";
     $stmt = $conexion->prepare($sql);
@@ -60,7 +60,7 @@ if(isset($_POST['submit'])){
     $nombre = $fila["nombre_usuario"];
     $rol = $fila["rol_usuario"];
     $codigo = $fila["codigo_usuario"];
-    $password_actual = $fila["contrasena_usuario"]; // Obtenemos la contraseña actual
+    $password_actual = $fila["contrasena_usuario"]; // Recuperamos la contraseña sin hashear
     $stmt->close();
 }
 ?>
@@ -93,9 +93,16 @@ if(isset($_POST['submit'])){
             </div>
             
             <div class="form-group">
-                <label for="passwordActual">Contraseña Actual (hash):</label>
-                <input type="text" class="form-control" id="passwordActual" value="<?= htmlspecialchars($password_actual) ?>" readonly>
-                <small class="form-text text-muted">Nota: Se muestra el hash de la contraseña, no el texto original.</small>
+                <label for="password">Contraseña:</label>
+                <input type="password" class="form-control" id="password" name="password" value="<?= htmlspecialchars($password_actual) ?>" required>
+                <small id="passwordError" class="form-text text-danger"></small>
+                <small class="form-text text-muted">Debe contener entre 4 y 12 caracteres, incluyendo números y letras.</small>
+            </div>
+            
+            <div class="form-group">
+                <label for="confirm_password">Confirmar Contraseña:</label>
+                <input type="password" class="form-control" id="confirm_password" name="confirm_password" value="<?= htmlspecialchars($password_actual) ?>" required>
+                <small id="confirmPasswordError" class="form-text text-danger"></small>
             </div>
             
             <div class="form-group">
@@ -107,12 +114,6 @@ if(isset($_POST['submit'])){
                 </select>
             </div>
             
-            <div class="form-group">
-                <label for="password">Nueva Contraseña (dejar en blanco para no cambiar):</label>
-                <input type="password" class="form-control" id="password" name="password">
-                <small id="passwordError" class="form-text text-danger"></small>
-            </div>
-            
             <input type="hidden" name="idUsuario" value="<?= htmlspecialchars($id_usuario) ?>">
             
             <button class="btn btn-primary" type="submit" name="submit">Actualizar</button>
@@ -120,11 +121,13 @@ if(isset($_POST['submit'])){
     </div>
 
     <script>
+    // Script para validación del lado del cliente
     document.getElementById('formulario').addEventListener('submit', function(event) {
         let isValid = true;
         const nombreUsuario = document.getElementById('nombreUsuario');
         const codigoUsuario = document.getElementById('codigoUsuario');
         const password = document.getElementById('password');
+        const confirmPassword = document.getElementById('confirm_password');
 
         // Validar nombre de usuario
         if (!/^[A-Za-z\s]{1,40}$/.test(nombreUsuario.value)) {
@@ -142,17 +145,27 @@ if(isset($_POST['submit'])){
             document.getElementById('codigoUsuarioError').textContent = '';
         }
 
-        // Validar contraseña (solo si se ha ingresado una nueva)
-        if (password.value !== '' && !/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{4,12}$/.test(password.value)) {
+        // Validar contraseña
+        if (!/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{4,12}$/.test(password.value)) {
             document.getElementById('passwordError').textContent = 'La contraseña debe contener entre 4 y 12 caracteres, incluyendo números y letras.';
             isValid = false;
         } else {
             document.getElementById('passwordError').textContent = '';
         }
+        
+        // Validar que las contraseñas coincidan
+        if (password.value !== confirmPassword.value) {
+            document.getElementById('confirmPasswordError').textContent = 'Las contraseñas no coinciden.';
+            isValid = false;
+        } else {
+            document.getElementById('confirmPasswordError').textContent = '';
+        }
 
+        // Si hay errores, se previene el envío del formulario
         if (!isValid) {
             event.preventDefault();
         } else if (!confirm('¿Estás seguro de actualizar este usuario?')) {
+            // Pedir confirmación antes de actualizar
             event.preventDefault();
         }
     });
