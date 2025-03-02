@@ -6,67 +6,81 @@ include '../conexion/sesion.php';
 
 
 <!DOCTYPE html>
+
 <head>
     <html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=0.8">
-    <title>Asesor</title>
-    <script src="horaYfecha.js" defer></script>
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <style>
- body {
-            background-color: #fbfcfc ;
-            
+
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=0.8">
+        <title>Asesor</title>
+        <script src="horaYfecha.js" defer></script>
+        <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+        <style>
+        body {
+            background-color: #fbfcfc;
+
         }
+
         .sombra {
             box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
         }
+
         .logo {
             width: 150px;
             height: auto;
             border-radius: 10px;
             box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
         }
-    </style>
-          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
- 
-	</head>
-<body>
-<div class="container-fluid alert alert-info sombra">
-       
-        <div class="row">
-            <div class="col-8"><h1>Asesor</h1><a href="../conexion/cerrar_sesion.php"class="btn btn-danger btn-sm">Cerrar Sesión</a><span></span><?php echo "Usuario: ".$_SESSION['usuario'];?></div>
-               <div class="col-3"><p id="fechaHora"></p></div>
-               <div class="col-1"> <div class="logo-container">
-        <img src="../img/presentacion.png" alt="Logo de la empresa" class="logo" style="width: 80px; height: auto;">
-    </div></div>
-    </div>    
-</div> <hr>
-         
-         <div class="container-fluid">
-        
-        <a href="factura_borrador.php" class="btn btn-success">Nueva Factura</a>
+        </style>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
-<!-- <a href="reportes_2.php" class="btn btn-warning">Reportes</a>
-</div> -->
-<hr>
-<div class="container-fluid">
-    <div class="alert alert-info sombra">
+    </head>
+
+<body>
+    <div class="container-fluid alert alert-info sombra">
+
         <div class="row">
-            <div class="col-2"> 
-                <a href="#" class="btn btn-primary" onclick="location.reload();">Actualizar página</a> 
+            <div class="col-8">
+                <h1>Asesor</h1><a href="../conexion/cerrar_sesion.php" class="btn btn-danger btn-sm">Cerrar
+                    Sesión</a><span></span><?php echo "Usuario: ".$_SESSION['usuario'];?>
             </div>
-            <div class="col-4"> 
-                <h3>Notificaciones <i class="fas fa-bell"></i>
- y Alertas <i class="fas fa-exclamation-triangle"></i>
-</h3>
+            <div class="col-3">
+                <p id="fechaHora"></p>
+            </div>
+            <div class="col-1">
+                <div class="logo-container">
+                    <img src="../img/presentacion.png" alt="Logo de la empresa" class="logo"
+                        style="width: 80px; height: auto;">
+                </div>
             </div>
         </div>
     </div>
-          
-          <?php
+    <hr>
+
+    <div class="container-fluid">
+
+        <a href="factura_borrador.php" class="btn btn-success">Nueva Factura</a>
+
+        <!-- <a href="reportes_2.php" class="btn btn-warning">Reportes</a>
+</div> -->
+        <hr>
+        <div class="container-fluid">
+            <div class="alert alert-info sombra">
+                <div class="row">
+                    <div class="col-2">
+                        <a href="#" class="btn btn-primary" onclick="location.reload();">Actualizar página</a>
+                    </div>
+                    <div class="col-4">
+                        <h3>Notificaciones <i class="fas fa-bell"></i>
+                            y Alertas <i class="fas fa-exclamation-triangle"></i>
+                        </h3>
+                    </div>
+                </div>
+            </div>
+
+            <?php
   
   // Consulta SQL para seleccionar la ultima factura registrada
   $sql_4 = "SELECT * FROM facturas WHERE no_factura = (SELECT MAX(no_factura) FROM facturas)";
@@ -96,7 +110,7 @@ if ($resultado_4->num_rows > 0) {
 }
 
 ?>
-  <?php
+            <?php
 
   // Consulta SQL para seleccionar los productos con unidades_producto igual o inferior a 10
 $sql = "SELECT ref_producto, descripcion_producto, unidades_producto FROM productos WHERE unidades_producto <= 10";
@@ -128,4 +142,5 @@ if ($resultado->num_rows > 0) {
 $conexion->close();
 ?>
 </body>
+
 </html>

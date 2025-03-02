@@ -112,7 +112,7 @@ if(isset($_POST['fecha_devo'])){
 
             mysqli_close($conexion);
         ?>
-        
+        <!-- Formulario -->
         <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST">
             <div class="form-group">
                 <label for="fecha_devo">Fecha Devolución:</label>

@@ -14,6 +14,7 @@ include '../conexion/sesion.php';
 </head>
 <body>
     <?php
+    // condicional para consulta
 if(isset($_POST['submit'])){
     $id_cliente = $_POST['idCliente'];
     $nom_cliente = $_POST['nom_cliente'];
@@ -22,7 +23,7 @@ if(isset($_POST['submit'])){
     $cel2_cliente = $_POST['cel2_cliente'];
     $direccion_cliente = $_POST['direccion_cliente'];
     $correo_cliente = $_POST['correo_cliente'];
-
+// consulta
     $sql = "UPDATE clientes SET nom_cliente='$nom_cliente', doc_cliente='$doc_cliente', cel1_cliente='$cel1_cliente', cel2_cliente='$cel2_cliente', direccion_cliente='$direccion_cliente', correo_cliente='$correo_cliente' WHERE id_cliente='$id_cliente'";
 
     $resultado = mysqli_query($conexion, $sql);
@@ -35,7 +36,7 @@ if(isset($_POST['submit'])){
 mysqli_close($conexion);
 
 }
-
+// condicional para consulta
     else{
         $id_cliente = $_GET['id_cliente'];
         $sql = "SELECT * FROM clientes WHERE id_cliente = '$id_cliente'";
@@ -48,7 +49,7 @@ mysqli_close($conexion);
         $direccion_cliente = $fila["direccion_cliente"];
         $correo_cliente = $fila["correo_cliente"];
         mysqli_close($conexion);
-        
+// formulario para actualización       
     ?>
 
 <div class="container mt-4">

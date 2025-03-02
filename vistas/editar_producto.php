@@ -13,8 +13,10 @@ include '../conexion/sesion.php';
     <title>Editar Producto</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
+
 <body>
     <?php 
+    //consulta lo enviado
 if(isset($_POST['submit'])){
     $id_producto = $_POST['id_producto'];
     $ref_producto = $_POST['ref_producto'];
@@ -49,7 +51,7 @@ mysqli_close($conexion);
         $unidades_producto = $fila["unidades_producto"];
         mysqli_close($conexion);
         
-        
+        // Formulario par editar producto
     ?>
 <div class="container">
 <div class="alert alert-info">

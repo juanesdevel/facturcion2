@@ -33,6 +33,7 @@ if(isset($_POST['submit'])){
     // Cerrar conexión
     $conexion->close();
 } else {
+    // Formulario para el nuevo cliente
 ?>
 
 <body>

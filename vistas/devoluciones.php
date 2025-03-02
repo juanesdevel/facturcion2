@@ -34,24 +34,17 @@ include '../conexion/sesion.php';
 </h1> <a href="ventas.php"class="btn btn-dark btn-sm">Regresar</a><span> </span><?php echo "Usuario: ".$_SESSION['usuario'];?> </div>
     
 <hr>
-
 <div class="container-fluid">
-
-<a href="#" class="btn btn-primary"onclick="location.reload();">Actualizar página</a> 
-
+    <a href="#" class="btn btn-primary"onclick="location.reload();">Actualizar página</a> 
 </div>
-  
-  </div>
+    </div>
 </div><hr>
-
-
-
 <div class="container-fluid">
          <div class=" alert alert-danger">
          <h5>Filtrar por:</h5>
     <div class="row">
         <div class="col">
-        
+        <!-- Formulario de consulta  -->
             <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
                 <label for="fecha_venta">Fecha de Devolución:</label><br>
                 <input type="date" id="fecha_venta" name="fecha_venta"><br><br> <!-- Cambiado el nombre del campo -->
@@ -390,9 +383,5 @@ include '../conexion/sesion.php';
     ?>
 </section>
 </div>
-
-
-
-
 </body>
 </html>

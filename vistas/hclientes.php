@@ -2,79 +2,83 @@
 //seguridad de sesion
 include '../conexion/conexion.php';
 include '../conexion/sesion.php';
+// Interfaz HTML
 ?>
-
-
-
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>historial</title>
-    
+
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <style>
-           @media print {
-            .no-print {
-                display: none;
-            }
+    @media print {
+        .no-print {
+            display: none;
         }
-        </style>
+    }
+    </style>
 </head>
+
 <body>
     <div class="container-fluid">
-<div class="alert alert-info"><h1>Historial de Cambios - Clientes</h1> 
-         <a href="historial.php"class="btn btn-dark">Regresar</a><span> </span><?php echo "Usuario: ".$_SESSION['usuario'];?></div></div><hr>
+        <div class="alert alert-info">
+            <h1>Historial de Cambios - Clientes</h1>
+            <a href="historial.php" class="btn btn-dark">Regresar</a><span>
+            </span><?php echo "Usuario: ".$_SESSION['usuario'];?>
+        </div>
+    </div>
+    <hr>
 
-         <div class='container-fluid'>
-             <button class='btn btn-info' onclick='imprimir()'>Imprimir</button>
-             <a href='#' class='btn btn-primary' onclick='location.reload();'>Actualizar página</a> 
-           </div></div><hr>
-           <div class='container-fluid'>
-<form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post">
+    <div class='container-fluid'>
+        <button class='btn btn-info' onclick='imprimir()'>Imprimir</button>
+        <a href='#' class='btn btn-primary' onclick='location.reload();'>Actualizar página</a>
+    </div>
+    </div>
+    <hr>
+    <div class='container-fluid'>
+        <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post">
             <input class="btn btn-success" type="submit" value="Descargar" name="backup">
         </form>
-           </div></div><hr>
-
-       
     </div>
-</div>
-
-
     </div>
-<hr>
+    <hr>
+    </div>
+    </div>
+    </div>
+    <hr>
+    <div class="container-fluid">
+        <div class='alert alert-info'>
+            <h5>Filtrar por:</h5>
+            <div class="row">
+                <div class="col">
 
-                      
-         <div class="container-fluid">
-             <div class='alert alert-info'>
-         <h5>Filtrar por:</h5>
-    <div class="row">
-        <div class="col">
-                    
-            <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
-                <label for="doc_cliente">Documento del Cliente:</label><br>
-                <input type="text" id="doc_cliente" name="doc_cliente"><br><br> <!-- Cambiado el nombre del campo -->
-                <input type="submit" value="Consultar">
-            </form>
+                    <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
+                        <label for="doc_cliente">Documento del Cliente:</label><br>
+                        <input type="text" id="doc_cliente" name="doc_cliente"><br><br>
+                        <!-- Cambiado el nombre del campo -->
+                        <input type="submit" value="Consultar">
+                    </form>
+                </div>
+                <div class="col">
+
+                    <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
+                        <label for="todos">Consultar todos los clientes:</label><br>
+                        <input type="submit" value="Consultar" name="consultar_todos">
+                    </form>
+
+
+                </div>
             </div>
-            <div class="col">
-            
-            <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
-    <label for="todos">Consultar todos los clientes:</label><br>
-    <input type="submit" value="Consultar" name="consultar_todos">
-</form>
-
-
-        </div>
         </div>
     </div>
-</div>
 
-<hr>
-<div class="container-fluid">
-<?php
+    <hr>
+    <div class="container-fluid">
+        <?php
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_POST["backup"])) {
         // Incluye el archivo de conexión
@@ -127,10 +131,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
             
 ?>
-</div>
-<section id="porDocumento">
-<div class="container-fluid">
-    <?php
+    </div>
+    <section id="porDocumento">
+        <div class="container-fluid">
+            <?php
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if (isset($_POST["doc_cliente"])) { // Verifica si el campo específico está presente
             include '../conexion/conexion.php';
@@ -184,14 +188,14 @@ echo "</table>";
         }
     }
     ?>
-    </div>
-</section>
+        </div>
+    </section>
 
 
 
-<section>
-<div class="container-fluid">
-<?php
+    <section>
+        <div class="container-fluid">
+            <?php
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['consultar_todos'])) {
     include '../conexion/conexion.php';
     
@@ -241,15 +245,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['consultar_todos'])) {
     $conexion->close();
 }
 ?>
-</div>
-</section>
+        </div>
+    </section>
 
 
 </body>
+
 </html>
 
 <script>
-     function imprimir() {
-        window.print(); // Imprimir la pantalla
-    }
+function imprimir() {
+    window.print(); // Imprimir la pantalla
+}
 </script>

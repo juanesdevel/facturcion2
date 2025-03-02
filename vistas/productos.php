@@ -5,6 +5,7 @@ include '../conexion/sesion.php';
 ?>
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -14,61 +15,67 @@ include '../conexion/sesion.php';
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
     <style>
-     .sombra {
-            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
-        }
-        </style>
-    <script>function confirmar(){
-        return confirm ('¿Esta seguro de elimininar el usuario de la base de datos?')}
-    
+    .sombra {
+        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+    }
+    </style>
+    <script>
+    function confirmar() {
+        return confirm('¿Esta seguro de elimininar el usuario de la base de datos?')
+    }
     </script>
-    
-    
-	
+
+
+
 </head>
+
 <body>
 
-<div class="container-fluid alert alert-info sombra">
-    <h1>Administración de Productos <i class="fas fa-box-open"></i>
-</h1>  <a href="inicio_admin.php"class="btn btn-dark btn-sm">Regresar</a><span> </span><?php echo "Usuario: ".$_SESSION['usuario'];?></div>
-
-<div class="container-fluid">
-<div class="row">
-    <div class="col">
-      
-        <a href="#" class="btn btn-primary" onclick="location.reload();">Actualizar página</a> 
-        <a href="nuevo_producto.php" class="btn btn-success">Nuevo Producto</a>
-     
+    <div class="container-fluid alert alert-info sombra">
+        <h1>Administración de Productos <i class="fas fa-box-open"></i>
+        </h1> <a href="inicio_admin.php" class="btn btn-dark btn-sm">Regresar</a><span>
+        </span><?php echo "Usuario: ".$_SESSION['usuario'];?>
     </div>
-  </div>
-</div><hr>
 
-<div class="container-fluid">
-         <div class="alert alert-info">
-         <h5>Filtrar por:</h5>
-    <div class="row">
-        <div class="col">
-            <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
-                <label for="ref_producto">Referencia de Producto:</label><br>
-                <input type="text" id="ref_producto" name="ref_producto"><br><br> <!-- Cambiado el nombre del campo -->
-                <input type="submit" value="Consultar">
-            </form>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col">
+
+                <a href="#" class="btn btn-primary" onclick="location.reload();">Actualizar página</a>
+                <a href="nuevo_producto.php" class="btn btn-success">Nuevo Producto</a>
+
+            </div>
         </div>
-        <div class="col">
-            
-            <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
-    <label for="todos">Consultar todos los Productos</label><br>
-    <input type="submit" value="Consultar" name="consultar_todos">
-</form>
-        </div>
-       
-        
     </div>
-</div>
-</div>
-<hr>
-  <div class="container-fluid">
-   <?php
+    <hr>
+
+    <div class="container-fluid">
+        <div class="alert alert-info">
+            <h5>Filtrar por:</h5>
+            <div class="row">
+                <div class="col">
+                    <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
+                        <label for="ref_producto">Referencia de Producto:</label><br>
+                        <input type="text" id="ref_producto" name="ref_producto"><br><br>
+                        <!-- Cambiado el nombre del campo -->
+                        <input type="submit" value="Consultar">
+                    </form>
+                </div>
+                <div class="col">
+
+                    <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
+                        <label for="todos">Consultar todos los Productos</label><br>
+                        <input type="submit" value="Consultar" name="consultar_todos">
+                    </form>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+    <hr>
+    <div class="container-fluid">
+        <?php
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if (isset($_POST["ref_producto"])) { // Verifica si el campo específico está presente
 include '../conexion/conexion.php';
@@ -115,12 +122,13 @@ echo "</table>";
             $conexion->close();
         }
     }
-    ?>
-    </section>
+// Genera la tabla con las consultas
+?>
+        </section>
 
-<section id="todos">
-<div class="container-fluid">
-    <?php
+        <section id="todos">
+            <div class="container-fluid">
+                <?php
     if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['consultar_todos'])) {
    include '../conexion/conexion.php';
 
@@ -163,12 +171,12 @@ echo "</td>";
             $conexion->close();
         }
     ?>
-    </div>
-</section>
+            </div>
+        </section>
 
-</div>
+    </div>
 
 
 </body>
-</html>
 
+</html>

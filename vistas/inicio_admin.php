@@ -2,16 +2,16 @@
 include '../conexion/conexion.php';
 include '../conexion/sesion.php';
 // Verificación del rol de administrador
-// Verificación del rol de administrador
 if (!isset($_SESSION['rol']) || $_SESSION['rol'] != 'admin') {
     // Si no es administrador, redirigir al inicio o denegar acceso
     echo '<script>alert("Acceso denegado. Solo administradores pueden acceder a esta página."); location.assign("inicio_operador.php");</script>';
     exit();  // Detener la ejecución si el usuario no tiene el rol adecuado
     }
-?> 
+?>
 
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -19,75 +19,81 @@ if (!isset($_SESSION['rol']) || $_SESSION['rol'] != 'admin') {
     <title>Administrador</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-        <script src="../scripts/horaYfecha.js" defer></script>
+    <script src="../scripts/horaYfecha.js" defer></script>
     <style>
- body {
-            background-color: #fbfcfc ;
-            
-        }
-        .sombra {
-            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
-        }
-        .logo {
-            width: 150px;
-            height: auto;
-            border-radius: 10px;
-            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
-        }
+    body {
+        background-color: #fbfcfc;
+
+    }
+
+    .sombra {
+        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+    }
+
+    .logo {
+        width: 150px;
+        height: auto;
+        border-radius: 10px;
+        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+    }
     </style>
 </head>
+
 <body>
-<div class="container-fluid alert alert-info sombra">
-    <div class="row">
-        <div class="col-8">
-            <h1>Administrador</h1>
-            <a href="../conexion/cerrar_sesion.php" class="btn btn-danger btn-sm sombra" onclick="return confirmarCierreSesion()">Cerrar Sesión</a>            <span><?php echo "Usuario: " . $_SESSION['usuario']; ?></span>
-        </div>
-        <div class="col-3">
-            <p id="fechaHora"></p>
-        </div>
-        <div class="col-1">
-            <div class="logo-container">
-                <img src="../img/presentacion.png" alt="Logo de la empresa" class="logo" style="width: 80px; height: auto;">
-            </div>
-        </div>
-    </div>    
-</div>
-
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-12">
-            <a href="factura_borrador.php" class="btn btn-success sombra">Nueva Factura</a>
-            <a href="ventas.php" class="btn btn-primary sombra">Administrar Ventas</a>
-            <a href="facturas.php" class="btn btn-primary sombra">Administrar Facturas</a>
-            <a href="clientes.php" class="btn btn-primary sombra">Administrar Clientes</a>
-            <a href="productos.php" class="btn btn-primary sombra">Administrar Productos</a>
-            <a href="usuario.php" class="btn btn-primary sombra">Administrar Usuarios</a>
-            <a href="Historial.php" class="btn btn-info sombra">Historial de Cambios</a>
-            <a href="backup.php" class="btn btn-info sombra">Backup</a>
-        </div>
-    </div>
-</div>
-<hr>
-
-<div class="container-fluid">
-    <div class="alert alert-info sombra">
+    <div class="container-fluid alert alert-info sombra">
         <div class="row">
-            <div class="col-2"> 
-                <a href="#" class="btn btn-primary" onclick="location.reload();">Actualizar página</a> 
+            <div class="col-8">
+                <h1>Administrador</h1>
+                <a href="../conexion/cerrar_sesion.php" class="btn btn-danger btn-sm sombra"
+                    onclick="return confirmarCierreSesion()">Cerrar Sesión</a>
+                <span><?php echo "Usuario: " . $_SESSION['usuario']; ?></span>
             </div>
-            <div class="col-4"> 
-                <h3>Notificaciones <i class="fas fa-bell"></i>
- y Alertas <i class="fas fa-exclamation-triangle"></i>
-</h3>
+            <div class="col-3">
+                <p id="fechaHora"></p>
+            </div>
+            <div class="col-1">
+                <div class="logo-container">
+                    <img src="../img/presentacion.png" alt="Logo de la empresa" class="logo"
+                        style="width: 80px; height: auto;">
+                </div>
             </div>
         </div>
     </div>
-</div>
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <a href="factura_borrador.php" class="btn btn-success sombra">Nueva Factura</a>
+                <a href="ventas.php" class="btn btn-primary sombra">Administrar Ventas</a>
+                <a href="facturas.php" class="btn btn-primary sombra">Administrar Facturas</a>
+                <a href="clientes.php" class="btn btn-primary sombra">Administrar Clientes</a>
+                <a href="productos.php" class="btn btn-primary sombra">Administrar Productos</a>
+                <a href="usuario.php" class="btn btn-primary sombra">Administrar Usuarios</a>
+                <a href="Historial.php" class="btn btn-info sombra">Historial de Cambios</a>
+                <a href="backup.php" class="btn btn-info sombra">Backup</a>
+            </div>
+        </div>
+    </div>
+    <hr>
+
+    <div class="container-fluid">
+        <div class="alert alert-info sombra">
+            <div class="row">
+                <div class="col-2">
+                    <a href="#" class="btn btn-primary" onclick="location.reload();">Actualizar página</a>
+                </div>
+                <div class="col-4">
+                    <h3>Notificaciones <i class="fas fa-bell"></i>
+                        y Alertas <i class="fas fa-exclamation-triangle"></i>
+                    </h3>
+                </div>
+            </div>
+        </div>
+    </div>
 
 
-<div class="container-fluid">
-    <?php
+    <div class="container-fluid">
+        <?php
     // Consulta SQL para seleccionar la última factura registrada
     $sql1 = "SELECT * FROM facturas WHERE no_factura = (SELECT MAX(no_factura) FROM facturas)";
     $resultado1= mysqli_query($conexion, $sql1);
@@ -106,10 +112,10 @@ if (!isset($_SESSION['rol']) || $_SESSION['rol'] != 'admin') {
         echo '</div>';
     }
     ?>
-</div>
+    </div>
 
-<div class="container-fluid">
-    <?php
+    <div class="container-fluid">
+        <?php
     // Consulta SQL para seleccionar productos con unidades menores o iguales a 10
     $sql2 = "SELECT ref_producto, descripcion_producto, unidades_producto FROM productos WHERE unidades_producto <= 10";
     $resultado2 = $conexion->query($sql2);
@@ -124,9 +130,9 @@ if (!isset($_SESSION['rol']) || $_SESSION['rol'] != 'admin') {
         }
     }
     ?>
-</div>
-<div class="container-fluid">
-<?php
+    </div>
+    <div class="container-fluid">
+        <?php
 // Obtener la fecha actual en formato 'Y-m-d'
 $fecha_hoy = date('Y-m-d');   
 
@@ -158,10 +164,10 @@ if ($resultado3->num_rows > 0) {
     echo '</div>';
 }
 ?>
-       
-</div>
-<div class="container-fluid">
-<?php
+
+    </div>
+    <div class="container-fluid">
+        <?php
 // Obtener la fecha actual en formato 'Y-m-d'
 $fecha_hoy = date('Y-m-d');   
 
@@ -189,11 +195,11 @@ if ($resultado5->num_rows > 0) {
     echo '</div>';
 }
 ?>
-       
-</div>
 
-<div class="container-fluid">
-    <?php
+    </div>
+
+    <div class="container-fluid">
+        <?php
     // Consulta SQL para seleccionar la mayor venta registrada
     $sql4 = "SELECT asesor_venta, fecha_hora_venta, valor_total_venta
              FROM ventas
@@ -220,10 +226,10 @@ if ($resultado5->num_rows > 0) {
     // Cerrar conexión
     $conexion->close();
     ?>
-</div>
+    </div>
 
-<script>
-function confirmarCierreSesion() {
-    return confirm("¿Está seguro de que desea cerrar la sesión?");
-}
-</script>
+    <script>
+    function confirmarCierreSesion() {
+        return confirm("¿Está seguro de que desea cerrar la sesión?");
+    }
+    </script>

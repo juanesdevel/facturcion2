@@ -63,6 +63,7 @@ if(isset($_POST['submit'])){
     $password_actual = $fila["contrasena_usuario"]; // Recuperamos la contraseña sin hashear
     $stmt->close();
 }
+// Formulario para editar usuario
 ?>
 <!DOCTYPE html>
 <html lang="es">
