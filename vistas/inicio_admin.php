@@ -48,13 +48,13 @@ if (!isset($_SESSION['rol']) || $_SESSION['rol'] != 'admin') {
                     onclick="return confirmarCierreSesion()">Cerrar Sesión</a>
                 <span><?php echo "Usuario: " . $_SESSION['usuario']; ?></span>
             </div>
-            <div class="col-3">
+            <div class="col-2">
                 <p id="fechaHora"></p>
             </div>
-            <div class="col-1">
+            <div class="col-2">
                 <div class="logo-container">
-                    <img src="../img/presentacion.png" alt="Logo de la empresa" class="logo"
-                        style="width: 80px; height: auto;">
+                    <img src="../img/logo.png" alt="Logo de la empresa" class="logo"
+                        style="width: 200px; height: auto;">
                 </div>
             </div>
         </div>

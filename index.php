@@ -40,7 +40,7 @@
             bottom: 0; /* Fija en la parte inferior de la pantalla */
             width: 100%; /* Ocupa todo el ancho */
             background-color: #95d2df; /* Color de fondo celeste */
-            color: white; /* Texto blanco */
+            color: blue; /* Texto blanco */
             text-align: center; /* Centra el texto */
             padding: 10px 0; /* Espaciado vertical */
         }
@@ -53,7 +53,7 @@
         }
         .logo {
             /* Estilo para la imagen del logo */
-            width: 150px; /* Ancho fijo */
+            width: 250px; /* Ancho fijo */
             height: auto; /* Altura automática para mantener proporciones */
             border-radius: 10px; /* Bordes redondeados */
             box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.5); /* Sombra más pronunciada */
@@ -63,21 +63,11 @@
 <body>
     <!-- Contenedor para el logo en la esquina superior derecha -->
     <div class="logo-container">
-        <img src="./img/presentacion.png" alt="Logo de la empresa" class="logo">
+        <img src="./img/logo.png" alt="Logo de la empresa" class="logo">
         <!-- Imagen del logo con ruta relativa y descripción alternativa -->
     </div>
 
-    <!-- Contenedor principal para el título del sistema -->
-    <div class="container mt-5">
-        <div class="row ">
-            <div class="col-12 custom-background text-white rounded">
-                <!-- Título centrado con estilo personalizado -->
-                <h1 class="text-center">ELECTRO AI VENTAS Y FACTURACIÓN</h1>
-            </div>
-        </div>
-    </div>
-
-    <?php
+      <?php
     // Incluye el archivo de conexión a la base de datos
     include ("conexion/conexion.php");
     // Incluye el archivo que valida las credenciales del usuario
@@ -118,7 +108,7 @@
 
     <!-- Pie de página con información del desarrollador -->
     <footer class="footer">
-        <p class="mb-0">Desarrollado por: Juan Esteban Gallego Cano. Contacto: juanesnet2016@gmail.com </p>
+        <p class="mb-0">Desarrollado por: Juan Esteban Gallego Cano. Contacto: juan_egallegoc@soy.sena.edu.co </p>
         <!-- Texto centrado sin márgenes inferiores -->
     </footer>
 
