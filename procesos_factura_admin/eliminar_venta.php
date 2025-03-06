@@ -40,13 +40,13 @@ if ($unidades_venta && $ref_prod_venta) {
 
     // Verificar si la eliminación fue exitosa
     if ($stmt_delete->affected_rows > 0) {
-        echo '<script>alert("Datos eliminados correctamente y stock actualizado");location.assign("nueva_venta.php");</script>';
+        echo '<script>alert("Datos eliminados correctamente y stock actualizado");location.assign("../vistas/factura_borrador.php");</script>';
     } else {
         echo '<script>alert("ERROR: La venta no pudo ser eliminada");location.assign("nueva_venta.php");</script>';
     }
     $stmt_delete->close();
 } else {
-    echo '<script>alert("ERROR: No se encontró la venta");location.assign("nueva_venta.php");</script>';
+    echo '<script>alert("ERROR: No se encontró la venta");location.assign("../vistas/factura_borrador.php");</script>';
 }
 
 // Cerrar la conexión
