@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <title>Carrito</title>
+    <title>Factura</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
        
 <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
@@ -35,7 +35,7 @@
         <div class="container-fluid alert alert-info sombra">
             <div class="col-12 d-flex justify-content-between align-items-center">
                 <div class="alert alert-info no-print">
-                    <h1>Carrito</h1>
+                    <h1>Factura</h1>
                     <a href="../vistas/factura_borrador.php" class="btn btn-dark">Regresar</a>
                 </div>
                 <div class="logo-container">

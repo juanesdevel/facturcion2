@@ -193,10 +193,22 @@ $diferencia_producto = $_POST['diferencia_producto'];
     
     <a class="btn btn-info" href="admin_cliente_factura.php">Administrar Cliente</a><hr>
     
-    <label for="asesor_venta">Asesor:</label>
-        <input type="text" id="asesor_venta" name="asesor_venta" value="<?php echo $_SESSION['usuario'];?>" readonly> 
-
-    <label for="caja">Caja:</label>
+<!-- <button onclick="buscarCliente()">Buscar</button>  -->
+<label for="doc_cliente_venta">Buscar por cédula:</label>
+<input type="text" id="doc_cliente_venta" 
+       placeholder="Solo numeros" 
+       name="doc_cliente_venta" 
+       maxlength="10" 
+       pattern="[0-9]{1,10}" 
+       oninput="this.value = this.value.replace(/\D/g, ''); buscarCliente();"><span> </span><button id="btnPegar" type="button" class="btn btn-info btn-sm" onclick="buscarCliente()">Pegar</button><span> </span><button id="btnbuscar" type="button" class="btn btn-info btn-sm" onclick="buscarCliente()">Buscar</button><br>
+<br>
+<!-- <button onclick="buscarProducto()">Buscar</button>  -->
+<label for="ref_prod_venta">Referencia</label>
+  <input type="text" size="5"id="ref_prod_venta" name="ref_prod_venta"  oninput="if(this.value.length > 4) this.value = this.value.slice(0,4); buscarProducto()">
+<label for="unidades_venta">Unidades:</label>
+        <input type="text" size="5" id="unidades_venta" name="unidades_venta" min="1" max="99" oninput=" if(this.value.length > 2) this.value = this.value.slice(0,2); this.value = this.value.replace(/\D/g, ''); calcularDiferencia(); calcularValorTotalVenta()">  
+<br><br>
+<label for="caja">Caja:</label>
 <select id="caja" name="caja" class="form-select">
     <?php 
         for ($i = 1; $i <= 5; $i++) {
@@ -206,37 +218,34 @@ $diferencia_producto = $_POST['diferencia_producto'];
     ?>
 </select>
 
-        <label for="forma_de_pago">Forma de Pago:</label>
+<label for="forma_de_pago">Forma de Pago:</label>
 <select id="forma_de_pago" name="forma_de_pago" class="form-select">
     <option value="Efectivo" <?php echo ($fila['forma_de_pago'] == 'Efectivo') ? 'selected' : ''; ?>>Efectivo</option>
     <option value="Tarjeta" <?php echo ($fila['forma_de_pago'] == 'Tarjeta') ? 'selected' : ''; ?>>Tarjeta</option>
 </select>
+<br>
         <hr>
 
-        <label for="factura_venta">Factura de Venta:</label>
-        <input class="bg-light" type="text" id="factura_venta" name="factura_venta" value="<?php echo (int)$no_factura + 1; ?>" readonly >
-   
-        <label for="fecha_hora_venta">Fecha y Hora de Venta:</label>
-        <input type="date_time" size="15"id="fecha_hora_venta" name="fecha_hora_venta" value="<?php echo date('Y-m-d 11:i'); ?>" readonly ><br><br>
-
-<!-- <button onclick="buscarCliente()">Buscar</button>  -->
-<label for="doc_cliente_venta">Buscar por cédula:</label>
-<input type="text" id="doc_cliente_venta" 
-       placeholder="Solo numeros" 
-       name="doc_cliente_venta" 
-       maxlength="10" 
-       pattern="[0-9]{1,10}" 
-       oninput="this.value = this.value.replace(/\D/g, ''); buscarCliente();"><span> </span><button id="btnPegar" type="button" class="btn btn-info btn-sm" onclick="buscarCliente()">Pegar</button><span> </span><button id="btnbuscar" type="button" class="btn btn-info btn-sm" onclick="buscarCliente()">Buscar</button><br><br>
 
         <label for="doc_cliente_venta_2">Documento Cliente:</label>
         <input type="text" size="10" id="doc_cliente_venta_2" name="doc_cliente_venta_2" value="<?php echo $fila['doc_cliente_venta']; ?>"readonly >  
         <label for="nom_cliente">Nombre Cliente:</label>
         <input type="text" size="40" id="nom_cliente" value="<?php echo $fila['nom_cliente']; ?>"  readonly name="nom_cliente"><br>
 <br>
+<label for="factura_venta">Factura de Venta:</label>
+        <input class="bg-light" size="6" type="text" id="factura_venta" name="factura_venta" value="<?php echo (int)$no_factura + 1; ?>" readonly >
+    
+        <label for="asesor_venta">Asesor:</label>
+        <input type="text" id="asesor_venta" name="asesor_venta" value="<?php echo $_SESSION['usuario'];?>" readonly> 
 
-<!-- <button onclick="buscarProducto()">Buscar</button>  -->
-  <label for="ref_prod_venta">Referencia</label>
-  <input type="text" size="5"id="ref_prod_venta" name="ref_prod_venta"  oninput="if(this.value.length > 4) this.value = this.value.slice(0,4); buscarProducto()">
+        <label for="fecha_hora_venta">Fecha y Hora de Venta:</label>
+        <input type="date_time" size="15"id="fecha_hora_venta" name="fecha_hora_venta" value="<?php echo date('Y-m-d 11:i'); ?>" readonly >
+        <br><br>
+
+
+
+
+
   <label for="unidades_producto">Stock</label>
    <input type="text" size="5"id="unidades_producto" name="unidades_producto"readonly>
    <label for="diferencia_producto">Diferencia</label>
@@ -245,8 +254,6 @@ $diferencia_producto = $_POST['diferencia_producto'];
         
         
        
-        <label for="unidades_venta">Unidades:</label>
-        <input type="text" size="5" id="unidades_venta" name="unidades_venta" min="1" max="99" oninput=" if(this.value.length > 2) this.value = this.value.slice(0,2); this.value = this.value.replace(/\D/g, ''); calcularDiferencia(); calcularValorTotalVenta()">  
 
         <label for="ref_prod_venta_2">Referencia</label>
         <input type="text" size="5" id="ref_prod_venta_2" readonly name="ref_prod_venta_2">
@@ -262,8 +269,8 @@ $diferencia_producto = $_POST['diferencia_producto'];
               
         <label for="valor_total_venta">Sub Total:</label>
         <input size="5"type="number" step="0.01" id="valor_total_venta" name="valor_total_venta" readonly><br><hr>
-        <button type="submit" name="submit" class="btn btn-success" onclick="return validarCampos();">Agregar al Carrito</button>
-        </span><a href="../procesos_factura_admin/validar_factura.php" class="btn btn-primary">Ver Carrito</a>
+        <button type="submit" name="submit" class="btn btn-success" onclick="return validarCampos();">Agregar a la Factura</button>
+        </span><a href="../procesos_factura_admin/validar_factura.php" class="btn btn-primary">Ver Factura</a>
     
     </form> 
      
