@@ -5,6 +5,7 @@ include '../conexion/sesion.php';
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -12,6 +13,7 @@ include '../conexion/sesion.php';
     <title>Editar Cliente</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
+
 <body>
     <?php
 if(isset($_POST['submit'])){
@@ -51,61 +53,86 @@ mysqli_close($conexion);
         
     ?>
 
-<div class="container mt-4">
-    <div class="alert alert-info"><h3 class="mb-0">Editar Cliente</h3> <a href="admin_cliente_factura.php" class="btn btn-dark mb-3">Regresar</a></div>
-   <hr>
-   <section>
-    <div class="container mt-5">
-        <form id="formulario" action="<?=$_SERVER['PHP_SELF']?>" method="post">
-        <input type="hidden" name="idCliente" value="<?php echo $id_cliente; ?>">
-            <div class="form-group">
-                <label for="nom_cliente">Nombre Cliente:</label>
-                <input type="text" class="form-control" id="nom_cliente" name="nom_cliente" placeholder="Nombre Cliente" autocomplete="off" value="<?php echo $nom_cliente; ?>" required onblur="validarNombreCliente() ">
-                <small id="nombreClienteError" class="text-danger error" style="display: none;">El nombre no debe contener números, caracteres especiales y debe tener máximo 50 caracteres.</small>
+    <div class="container mt-4">
+        <div class="alert alert-info">
+            <h3 class="mb-0">Editar Cliente</h3> <a href="admin_cliente_factura.php"
+                class="btn btn-dark mb-3">Regresar</a>
+        </div>
+        <hr>
+        <section>
+            <div class="container mt-5">
+                <form id="formulario" action="<?=$_SERVER['PHP_SELF']?>" method="post">
+                    <input type="hidden" name="idCliente" value="<?php echo $id_cliente; ?>">
+                    <div class="form-group">
+                        <label for="nom_cliente">Nombre Cliente:</label>
+                        <input type="text" class="form-control" id="nom_cliente" name="nom_cliente"
+                            placeholder="Nombre Cliente" autocomplete="off" value="<?php echo $nom_cliente; ?>" required
+                            onblur="validarNombreCliente() ">
+                        <small id="nombreClienteError" class="text-danger error" style="display: none;">El nombre no
+                            debe contener números, caracteres especiales y debe tener máximo 50 caracteres.</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="doc_cliente">Documento Cliente:</label>
+                        <input type="text" class="form-control" id="doc_cliente" name="doc_cliente"
+                            placeholder="Documento Cliente" autocomplete="off" onblur="validarDocumentoCliente()"
+                            required value="<?php echo $doc_cliente; ?>">
+                        <small id="documentoClienteError" class="text-danger error" style="display: none;">El documento
+                            debe contener solo números y máximo 10 caracteres.</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="cel1_cliente">Celular 1 Cliente:</label>
+                        <input type="text" class="form-control" id="cel1_cliente" name="cel1_cliente"
+                            placeholder="Celular 1 Cliente" autocomplete="off"
+                            onblur="validarCelularCliente('cel1_cliente', 'cel1Error')" required
+                            value="<?php echo $cel1_cliente; ?>">
+                        <small id="cel1Error" class="text-danger error" style="display: none;">El celular debe contener
+                            solo 10 números.</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="cel2_cliente">Celular 2 Cliente:</label>
+                        <input type="text" class="form-control" id="cel2_cliente" name="cel2_cliente"
+                            placeholder="Celular 2 Cliente" autocomplete="off"
+                            onblur="validarCelularCliente('cel2_cliente', 'cel2Error')" required
+                            value="<?php echo $cel2_cliente; ?>">
+                        <small id="cel2Error" class="text-danger error" style="display: none;">El celular debe contener
+                            solo 10 números.</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="direccion_cliente">Dirección Cliente:</label>
+                        <input type="text" class="form-control" id="direccion_cliente" name="direccion_cliente"
+                            placeholder="Dirección Cliente" autocomplete="off" onblur="validarDireccionCliente()"
+                            required value="<?php echo $direccion_cliente; ?>">
+                        <small id="direccionClienteError" class="text-danger error" style="display: none;">La dirección
+                            no debe contener caracteres especiales y debe tener máximo 100 caracteres.</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="correo_cliente">Correo Cliente:</label>
+                        <input type="email" class="form-control" id="correo_cliente" name="correo_cliente"
+                            placeholder="Correo Cliente" autocomplete="off" onblur="validarCorreoCliente()" required
+                            value="<?php echo $correo_cliente; ?>">
+                        <small id="correoClienteError" class="text-danger error" style="display: none;">El correo debe
+                            contener @ un . y no contener espacios.</small>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary" name="submit"
+                        onclick="return validarFormulario()">ACTUALIZAR</button>
+                    <button type="button" class="btn btn-secondary" onclick="borrarDatos()">Limpiar</button>
+                </form>
             </div>
-
-            <div class="form-group">
-                <label for="doc_cliente">Documento Cliente:</label>
-                <input type="text" class="form-control" id="doc_cliente" name="doc_cliente" placeholder="Documento Cliente" autocomplete="off" onblur="validarDocumentoCliente()" required value="<?php echo $doc_cliente; ?>">
-                <small id="documentoClienteError" class="text-danger error" style="display: none;">El documento debe contener solo números y máximo 10 caracteres.</small>
-            </div>
-
-            <div class="form-group">
-                <label for="cel1_cliente">Celular 1 Cliente:</label>
-                <input type="text" class="form-control" id="cel1_cliente" name="cel1_cliente" placeholder="Celular 1 Cliente" autocomplete="off" onblur="validarCelularCliente('cel1_cliente', 'cel1Error')" required value="<?php echo $cel1_cliente; ?>">
-                <small id="cel1Error" class="text-danger error" style="display: none;">El celular debe contener solo 10 números.</small>
-            </div>
-
-            <div class="form-group">
-                <label for="cel2_cliente">Celular 2 Cliente:</label>
-                <input type="text" class="form-control" id="cel2_cliente" name="cel2_cliente" placeholder="Celular 2 Cliente" autocomplete="off" onblur="validarCelularCliente('cel2_cliente', 'cel2Error')" required value="<?php echo $cel2_cliente; ?>">
-                <small id="cel2Error" class="text-danger error" style="display: none;">El celular debe contener solo 10 números.</small>
-            </div>
-
-            <div class="form-group">
-                <label for="direccion_cliente">Dirección Cliente:</label>
-                <input type="text" class="form-control" id="direccion_cliente" name="direccion_cliente" placeholder="Dirección Cliente" autocomplete="off" onblur="validarDireccionCliente()" required value="<?php echo $direccion_cliente; ?>">
-                <small id="direccionClienteError" class="text-danger error" style="display: none;">La dirección no debe contener caracteres especiales y debe tener máximo 100 caracteres.</small>
-            </div>
-
-            <div class="form-group">
-                <label for="correo_cliente">Correo Cliente:</label>
-                <input type="email" class="form-control" id="correo_cliente" name="correo_cliente" placeholder="Correo Cliente" autocomplete="off" onblur="validarCorreoCliente()" required value="<?php echo $correo_cliente; ?>">
-                <small id="correoClienteError" class="text-danger error" style="display: none;">El correo debe contener @ un . y no contener espacios.</small>
-            </div>
-
-            <button type="submit" class="btn btn-primary" name="submit" onclick="return validarFormulario()">ACTUALIZAR</button>
-            <button type="button" class="btn btn-secondary" onclick="borrarDatos()">Limpiar</button>
-        </form>
-    </div>
-</section>
+        </section>
 
 
-                  
-                  <?php
+
+        <?php
                   }
                   ?>
 </body>
+
 </html>
 
 <script>
@@ -206,7 +233,7 @@ function borrarDatos() {
     document.getElementById("formulario").reset();
     let errores = document.querySelectorAll('.error');
     for (let error of errores) {
-        error.style.display = 'none';  // Ocultar todos los errores al limpiar el formulario
+        error.style.display = 'none'; // Ocultar todos los errores al limpiar el formulario
     }
 }
 </script>

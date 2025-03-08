@@ -12,7 +12,8 @@ include '../conexion/sesion.php';
     <title>Document</title>
    
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <style>
+   
+   <style>
         table {
             border-collapse: collapse;
             width: 100%;

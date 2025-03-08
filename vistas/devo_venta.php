@@ -73,6 +73,7 @@ if(isset($_POST['fecha_devo'])){
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -80,6 +81,7 @@ if(isset($_POST['fecha_devo'])){
     <title>Editar Cliente</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
+
 <body>
     <div class="container-fluid">
         <div class="alert alert-info">
@@ -120,49 +122,58 @@ if(isset($_POST['fecha_devo'])){
             </div>
             <div class="form-group">
                 <label for="usuario_devo">Usuario Devolución:</label>
-                <input type="text" class="form-control" id="usuario_devo" name="usuario_devo" readonly value= "<?php echo $asesor_venta; ?>">
+                <input type="text" class="form-control" id="usuario_devo" name="usuario_devo" readonly
+                    value="<?php echo $asesor_venta; ?>">
             </div>
             <div class="form-group">
                 <label for="doc-cliente">Documento Cliente:</label>
-                <input type="text" class="form-control" id="doc-cliente" name="doc-cliente" readonly value= "<?php echo $doc_cliente_venta; ?>">
+                <input type="text" class="form-control" id="doc-cliente" name="doc-cliente" readonly
+                    value="<?php echo $doc_cliente_venta; ?>">
             </div>
             <div class="form-group">
                 <label for="id_venta">ID Venta:</label>
-                <input type="text" class="form-control" id="id_venta" name="id_venta" readonly value="<?php echo $id_venta; ?>">
+                <input type="text" class="form-control" id="id_venta" name="id_venta" readonly
+                    value="<?php echo $id_venta; ?>">
             </div>
             <div class="form-group">
                 <label for="factura_devo">Factura Devolución:</label>
-                <input type="text" class="form-control" id="factura_devo" name="factura_devo" readonly value="<?php echo $factura_venta; ?>">
+                <input type="text" class="form-control" id="factura_devo" name="factura_devo" readonly
+                    value="<?php echo $factura_venta; ?>">
             </div>
             <div class="form-group">
                 <label for="ref-pro">Referencia Producto:</label>
-                <input type="text" class="form-control" id="ref-pro" name="ref-pro" readonly value="<?php echo $ref_prod_venta; ?>">
+                <input type="text" class="form-control" id="ref-pro" name="ref-pro" readonly
+                    value="<?php echo $ref_prod_venta; ?>">
             </div>
             <div class="form-group">
                 <label for="unds">Unidades:</label>
-                <input type="text" class="form-control" id="unds" name="unds" readonly value="<?php echo $unidades_venta; ?>">
+                <input type="text" class="form-control" id="unds" name="unds" readonly
+                    value="<?php echo $unidades_venta; ?>">
             </div>
             <div class="form-group">
                 <label for="valor_devo">Valor Devolución:</label>
-                <input type="text" class="form-control" id="valor_devo" name="valor_devo" readonly value="<?php echo $valor_total_venta; ?>">
+                <input type="text" class="form-control" id="valor_devo" name="valor_devo" readonly
+                    value="<?php echo $valor_total_venta; ?>">
             </div>
             <div class="form-group">
                 <label for="tipo_devo">Tipo Devolución:</label>
-                 <select class="form-control" id="tipo_devo" name="tipo_devo">
-                <option value="Garantía">Garantía</option>
-                 <option value="Desestimiento">Desestimiento</option>  
-                <option value="Otro">Otro</option>
+                <select class="form-control" id="tipo_devo" name="tipo_devo">
+                    <option value="Garantía">Garantía</option>
+                    <option value="Desestimiento">Desestimiento</option>
+                    <option value="Otro">Otro</option>
                 </select>
             </div>
             <div class="form-group">
                 <label for="descripcion_devo">Descripción Devolución:</label>
-                <textarea class="form-control" id="descripcion_devo" name="descripcion_devo" rows="3" required></textarea>
+                <textarea class="form-control" id="descripcion_devo" name="descripcion_devo" rows="3"
+                    required></textarea>
             </div>
             <button type="submit" class="btn btn-danger">DEVOLVER</button>
         </form>
         <?php } ?>
     </div>
 </body>
+
 </html>
 <script>
 // Obtener la fecha y hora actual
@@ -176,5 +187,5 @@ const horaFormateada = fechaActual.toTimeString().split(' ')[0].slice(0, 5); // 
 const fechaHoraFormateada = `${fechaFormateada} ${horaFormateada}`;
 
 // Establecer el valor predeterminado en el campo de fecha y hora
-document.getElementById('fecha_devo').value = fechaHoraFormateada;
-<script>
+document.getElementById('fecha_devo').value = fechaHoraFormateada; <
+script >
