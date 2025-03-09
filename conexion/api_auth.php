@@ -1,86 +1,101 @@
 <?php
-// api_auth.php - Coloca este archivo en tu carpeta de conexión
-include 'conexion.php';
+// Encabezados requeridos para la API
+header("Access-Control-Allow-Origin: *");
+header("Content-Type: application/json; charset=UTF-8");
+header("Access-Control-Allow-Methods: POST");
+header("Access-Control-Max-Age: 3600");
+header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 
-// Establece las cabeceras para las respuestas de la API
-header('Content-Type: application/json');
+// Incluir la conexión a la base de datos
+include_once 'conexion.php';
 
-// Función para manejar la autenticación mediante API
-function handleApiAuthentication() {
-    global $conexion;
+// Inicializar la estructura de la respuesta
+$response = array();
+$response['Exitoso'] = false;
+$response['Mensaje'] = "";
+$response['data'] = null;
+$response['redirect'] = "";
+
+// Obtener los datos enviados en formato JSON
+$data = json_decode(file_get_contents("php://input"), true);
+
+// Si los datos se envían a través de un formulario POST en lugar de JSON
+if (!$data && isset($_POST['usuario']) && isset($_POST['contrasena'])) {
+    $data = array(
+        'usuario' => $_POST['usuario'],
+        'contrasena' => $_POST['contrasena']
+    );
+}
+
+// Validar que los datos requeridos estén presentes
+if ($data && isset($data['usuario']) && isset($data['contrasena'])) {
+    // Sanitizar la entrada del usuario para evitar inyección de código
+    $usuario = htmlspecialchars(strip_tags($data['usuario']));
+    $contrasena = htmlspecialchars(strip_tags($data['contrasena']));
     
-    // Verifica si la solicitud es de tipo POST, si no, devuelve un error
-    if ($_SERVER["REQUEST_METHOD"] != "POST") {
-        http_response_code(405); // Método no permitido
-        echo json_encode(['Estado' => 'error', 'Mensaje' => 'Método no permitido']);
-        return;
-    }
-    
-    // Obtiene los datos en formato JSON de la solicitud
-    $json_data = file_get_contents('php://input');
-    $data = json_decode($json_data, true);
-    
-    // Verifica si los datos JSON son válidos
-    if (!$data) {
-        http_response_code(400); // Solicitud incorrecta
-        echo json_encode(['Estado' => 'error', 'Mensaje' => 'Datos JSON inválidos']);
-        return;
-    }
-    
-    // Verifica si los campos requeridos están presentes
-    if (!isset($data['usuario']) || !isset($data['contrasena'])) {
-        http_response_code(400); // Solicitud incorrecta
-        echo json_encode(['Estado' => 'error', 'Mensaje' => 'Falta el usuario o la contraseña']);
-        return;
-    }
-    
-    // Sanitiza la entrada para evitar ataques XSS
-    $usuario = htmlspecialchars($data['usuario']);
-    $contrasena = htmlspecialchars($data['contrasena']);
-    
-    // Prepara la consulta para buscar al usuario en la base de datos
+    // Preparar la consulta SQL para verificar las credenciales del usuario
     $sql = "SELECT * FROM usuarios WHERE nombre_usuario = ? AND contrasena_usuario = ?";
     $stmt = $conexion->prepare($sql);
     
-    // Verifica si la consulta se preparó correctamente
+    // Verificar si la preparación de la consulta falló
     if (!$stmt) {
-        http_response_code(500); // Error interno del servidor
-        echo json_encode(['Estado' => 'error', 'Mensaje' => 'Error en la base de datos: ' . $conexion->error]);
-        return;
+        $response['Mensaje'] = "Error en la preparación de la consulta: " . $conexion->error;
+        echo json_encode($response);
+        exit();
     }
     
-    // Vincula los parámetros y ejecuta la consulta
+    // Vincular los parámetros a la consulta
     $stmt->bind_param("ss", $usuario, $contrasena);
-    $stmt->execute();
-    $result = $stmt->get_result();
     
-    // Verifica si el usuario existe en la base de datos
-    if ($result->num_rows > 0) {
-        $row = $result->fetch_assoc();
-        $rol = $row["rol_usuario"];
+    // Ejecutar la consulta
+    if ($stmt->execute()) {
+        $result = $stmt->get_result();
         
-        // Genera un token de autenticación (para producción, usa JWT u otro método seguro)
-        $token = bin2hex(random_bytes(32));
-        
-        // Devuelve una respuesta de éxito con la información del usuario
-        echo json_encode([
-            'Estado' => 'Exitoso',
-            'mensaje' => 'Autenticación exitosa',
-            'token' => $token,
-            'usuario' => [
-                'usuario' => $row["nombre_usuario"],
-                'rol' => $rol
-            ],
-            'redirigir a' => ($rol == 'admin') ? '../vistas/inicio_admin.php' : '../vistas/inicio_operador.php'
-        ]);
+        // Verificar si se encontró un usuario con las credenciales proporcionadas
+        if ($result->num_rows > 0) {
+            $user_data = $result->fetch_assoc();
+            
+            // Configurar la respuesta como autenticación exitosa
+            $response['Exitoso'] = true;
+            $response['Mensaje'] = "Autenticación exitosa";
+            
+            // Agregar los datos del usuario a la respuesta
+            $response['data'] = array(
+                'usuario' => $user_data['nombre_usuario'],
+                'rol' => $user_data['rol_usuario'],
+                'id_usuario' => $user_data['id_usuario'],
+                // Se pueden agregar más datos del usuario si es necesario
+            );
+            
+            // Redirigir según el rol del usuario
+            if ($user_data['rol_usuario'] == 'admin') {
+                $response['redirect'] = '../vistas/inicio_admin.php';
+            } elseif ($user_data['rol_usuario'] == 'asesor') {
+                $response['redirect'] = '../vistas/inicio_operador.php';
+            } else {
+                $response['redirect'] = '../index.php';
+                $response['Mensaje'] = "Usuario sin autorización de ingreso";
+                $response['Exitoso'] = false;
+            }
+        } else {
+            // Si el usuario o contraseña son incorrectos
+            $response['Mensaje'] = "Acceso denegado: Usuario o contraseña incorrecta";
+        }
     } else {
-        // Credenciales inválidas
-        http_response_code(401); // No autorizado
-        echo json_encode(['Estado' => 'error', 'Mensaje' => 'Usuario o contraseña incorrecta']);
+        // Si la ejecución de la consulta falló
+        $response['Mensaje'] = "Error al ejecutar la consulta: " . $stmt->error;
     }
     
-    // Cierra la consulta y la conexión a la base de datos
+    // Cerrar la consulta preparada
     $stmt->close();
-    $conexion->close();
+} else {
+    // Si la solicitud no contiene datos válidos
+    $response['Mensaje'] = "Datos incompletos o formato inválido";
 }
+
+// Cerrar la conexión a la base de datos
+$conexion->close();
+
+// Devolver la respuesta en formato JSON
+echo json_encode($response);
 ?>

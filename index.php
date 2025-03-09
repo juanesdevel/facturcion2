@@ -13,15 +13,11 @@
             background-size: cover; /* Hace que la imagen cubra todo el fondo */
             background-position: center; /* Centra la imagen */
             background-repeat: no-repeat; /* Evita que la imagen se repita */
-        }
-
-        body {
-            /* Define un color de fondo sólido como respaldo si la imagen no carga */
-            background-color: #f8f9fa;
+       
         }
         .custom-background {
             /* Estilo para contenedores personalizados */
-            background-color: #95d2df; /* Color de fondo celeste */
+            background-color: rgb(60, 116, 236); /* Color de fondo celeste */
             padding: 2rem; /* Espaciado interno de 2rem */
             border-radius: 20px; /* Bordes redondeados */
             box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15); /* Sombra suave */
@@ -29,7 +25,7 @@
         }
         .form-style {
             /* Estilo específico para el formulario */
-            background-color: rgba(255, 255, 255, 0.9); /* Fondo blanco con 90% de opacidad */
+            background-color: rgba(71, 154, 231, 0.9); /* Fondo blanco con 90% de opacidad */
             border-radius: 20px; /* Bordes redondeados */
             padding: 2rem; /* Espaciado interno */
         }
@@ -39,7 +35,7 @@
             left: 0; /* Alinea a la izquierda */
             bottom: 0; /* Fija en la parte inferior de la pantalla */
             width: 100%; /* Ocupa todo el ancho */
-            background-color: #95d2df; /* Color de fondo celeste */
+            background-color:rgb(60, 116, 236); /* Color de fondo celeste */
             color: white; /* Texto blanco */
             text-align: center; /* Centra el texto */
             padding: 10px 0; /* Espaciado vertical */
@@ -63,7 +59,7 @@
 <body>
     <!-- Contenedor para el logo en la esquina superior derecha -->
     <div class="logo-container">
-        <img src="./img/presentacion.png" alt="Logo de la empresa" class="logo">
+        <img src="./img/logo.png" alt="Logo de la empresa" class="logo">
         <!-- Imagen del logo con ruta relativa y descripción alternativa -->
     </div>
 
@@ -107,7 +103,7 @@
                         </div>
                         <div class="text-center">
                             <!-- Botón para enviar el formulario -->
-                            <button type="submit" class="btn btn-info btn-lg">Ingresar</button>
+                            <button type="submit" class="btn btn-primary btn-lg">Ingresar</button>
                             <!-- Botón con estilo de Bootstrap -->
                         </div>
                     </form>
@@ -118,7 +114,7 @@
 
     <!-- Pie de página con información del desarrollador -->
     <footer class="footer">
-        <p class="mb-0">Desarrollado por: Juan Esteban Gallego Cano. Contacto: juanesnet2016@gmail.com </p>
+        <p class="mb-0">Desarrollado por: Juan Esteban Gallego Cano. Contacto: juan_egallegoc@soy.sena.edu.co </p>
         <!-- Texto centrado sin márgenes inferiores -->
     </footer>
 
