@@ -18,10 +18,7 @@ include '../conexion/sesion.php';
     <title>Administración de Clientes</title>
     
     <style>
-        /* Establece el color de fondo de la página */
-        body {
-            background-color: #f5f5dc;
-        }
+       
         /* Agrega sombra a los elementos con esta clase */
         .sombra {
             box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);

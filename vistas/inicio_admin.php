@@ -43,7 +43,7 @@ if (!isset($_SESSION['rol']) || $_SESSION['rol'] != 'admin') {
     <div class="container-fluid alert alert-info sombra">
         <div class="row">
             <div class="col-8">
-                <h1>Administrador</h1>
+                <h1>Panel Administrador</h1>
                 <a href="../conexion/cerrar_sesion.php" class="btn btn-danger btn-sm sombra"
                     onclick="return confirmarCierreSesion()">Cerrar Sesión</a>
                 <span><?php echo "Usuario: " . $_SESSION['usuario']; ?></span>
@@ -69,7 +69,6 @@ if (!isset($_SESSION['rol']) || $_SESSION['rol'] != 'admin') {
                 <a href="clientes.php" class="btn btn-primary sombra">Administrar Clientes</a>
                 <a href="productos.php" class="btn btn-primary sombra">Administrar Productos</a>
                 <a href="usuario.php" class="btn btn-primary sombra">Administrar Usuarios</a>
-                <a href="Historial.php" class="btn btn-info sombra">Historial de Cambios</a>
                 <a href="backup.php" class="btn btn-info sombra">Backup</a>
             </div>
         </div>

@@ -200,7 +200,7 @@ $diferencia_producto = $_POST['diferencia_producto'];
        name="doc_cliente_venta" 
        maxlength="10" 
        pattern="[0-9]{1,10}" 
-       oninput="this.value = this.value.replace(/\D/g, ''); buscarCliente();"><span> </span><button id="btnPegar" type="button" class="btn btn-info btn-sm" onclick="buscarCliente()">Pegar</button><span> </span><button id="btnbuscar" type="button" class="btn btn-info btn-sm" onclick="buscarCliente()">Buscar</button><br>
+       oninput="this.value = this.value.replace(/\D/g, ''); buscarCliente();"><span> </span><button id="btnbuscar" type="button" class="btn btn-info btn-sm" onclick="buscarCliente()">Buscar</button><br>
 <br>
 <!-- <button onclick="buscarProducto()">Buscar</button>  -->
 <label for="ref_prod_venta">Referencia</label>
@@ -601,37 +601,4 @@ function actualizarFechaHora() {
 setInterval(actualizarFechaHora, 1000);
 
 </script>
-<script>
-document.addEventListener("DOMContentLoaded", function() {
-    // Función para pegar desde el portapapeles
-    function pegarDesdePortapapeles() {
-        // Verificar si el navegador soporta el API del portapapeles
-        if (!navigator.clipboard) {
-            console.error('El navegador no soporta el API del portapapeles.');
-            return;
-        }
 
-        // Pegar el contenido del portapapeles
-        navigator.clipboard.readText()
-            .then(texto => {
-                // Obtener el input destino
-                var inputDestino = document.getElementById('doc_cliente_venta');
-
-                // Pegar el texto en el input destino
-                if (inputDestino && texto) {
-                    inputDestino.value = texto; // Para campos de texto
-                }
-            })
-            .catch(error => {
-                console.error('Error al leer el portapapeles: ', error);
-            });
-    }
-
-    // Escuchar el evento de clic en el botón
-    var btnPegar = document.getElementById('btnPegar');
-    btnPegar.addEventListener('click', function() {
-        pegarDesdePortapapeles();
-    });
-});
- 
-</script>

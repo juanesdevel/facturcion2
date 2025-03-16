@@ -1,6 +1,6 @@
 <?php
 $id_usuario=$_GET['id_usuario'];
-include ("conexion.php");
+include ("../conexion/conexion.php");
 $sql="delete from usuarios where id_usuario='".$id_usuario."'";$resultado=mysqli_query($conexion,$sql);
 
 if($resultado){

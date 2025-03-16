@@ -84,7 +84,7 @@ if(isset($_POST['fecha_devo'])){
 
 <body>
     <div class="container-fluid">
-        <div class="alert alert-info">
+        <div class="alert alert-danger">
             <h3>Devolución de Venta</h3>
             <a class="btn btn-dark" href="ventas.php">Regresar</a>
         </div>
