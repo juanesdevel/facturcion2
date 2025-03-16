@@ -48,9 +48,9 @@ if(isset($_POST['submit'])){
         <h3>Formulario de Nuevo Cliente</h3>
         <form id="formulario" action="<?=$_SERVER['PHP_SELF']?>" method="post">
             <div class="form-group">
-                <label for="nom_cliente">Nombre Cliente:</label>
-                <input type="text" class="form-control" id="nom_cliente" name="nom_cliente" placeholder="Nombre Cliente" autocomplete="off" required onblur="validarNombreCliente()">
-                <small id="nombreClienteError" class="text-danger error" style="display: none;">El nombre no debe contener números, caracteres especiales y debe tener máximo 50 caracteres.</small>
+                <label for="nom_cliente">Nombre Cliente (SOLO MAYÚSCULAS):</label>
+                <input type="text" class="form-control" id="nom_cliente" name="nom_cliente" placeholder="NOMBRE CLIENTE" autocomplete="off" required onblur="validarNombreCliente()" oninput="convertirMayusculas(this)" style="text-transform: uppercase;">
+                <small id="nombreClienteError" class="text-danger error" style="display: none;">El nombre debe contener SOLO LETRAS MAYÚSCULAS, sin números, caracteres especiales y debe tener máximo 50 caracteres.</small>
             </div>
 
             <div class="form-group">
@@ -94,10 +94,15 @@ if(isset($_POST['submit'])){
 ?>
 
 <script>
-// Función para validar el nombre del cliente
+// Función para convertir texto a mayúsculas automáticamente
+function convertirMayusculas(input) {
+    input.value = input.value.toUpperCase();
+}
+
+// Función para validar el nombre del cliente (solo mayúsculas)
 function validarNombreCliente() {
     const nombre = document.getElementById('nom_cliente').value;
-    const regex = /^[A-Za-z\s]{1,60}$/; // Solo letras y espacios, máximo 60 caracteres
+    const regex = /^[A-Z\s]{1,60}$/; // Solo letras MAYÚSCULAS y espacios, máximo 60 caracteres
     const error = document.getElementById('nombreClienteError');
 
     if (!regex.test(nombre)) {
@@ -185,14 +190,6 @@ function validarFormulario() {
 function borrarDatos() {
     document.getElementById('formulario').reset();
     document.querySelectorAll('.error').forEach(error => error.style.display = 'none');
-}
-
-function borrarDatos() {
-    document.getElementById("formulario").reset();
-    let errores = document.querySelectorAll('.error');
-    for (let error of errores) {
-        error.style.display = 'none';  // Ocultar todos los errores al limpiar el formulario
-    }
 }
 </script>
 

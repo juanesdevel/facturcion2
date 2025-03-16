@@ -17,7 +17,7 @@
         }
         .custom-background {
             /* Estilo para contenedores personalizados */
-            background-color: rgb(60, 116, 236); /* Color de fondo celeste */
+            background-color: rgb(93, 173, 226); /* Color de fondo celeste */
             padding: 2rem; /* Espaciado interno de 2rem */
             border-radius: 20px; /* Bordes redondeados */
             box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15); /* Sombra suave */
@@ -25,7 +25,7 @@
         }
         .form-style {
             /* Estilo específico para el formulario */
-            background-color: rgba(71, 154, 231, 0.9); /* Fondo blanco con 90% de opacidad */
+            background-color: rgba(133, 193, 233); /* Fondo blanco con 90% de opacidad */
             border-radius: 20px; /* Bordes redondeados */
             padding: 2rem; /* Espaciado interno */
         }
@@ -35,7 +35,7 @@
             left: 0; /* Alinea a la izquierda */
             bottom: 0; /* Fija en la parte inferior de la pantalla */
             width: 100%; /* Ocupa todo el ancho */
-            background-color:rgb(60, 116, 236); /* Color de fondo celeste */
+            background-color:rgb(93, 173, 226); /* Color de fondo celeste */
             color: white; /* Texto blanco */
             text-align: center; /* Centra el texto */
             padding: 10px 0; /* Espaciado vertical */
