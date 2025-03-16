@@ -1,6 +1,6 @@
 <?php
 $id_productos=$_GET['id_producto'];
-include ("conexion.php");
+include ("../conexion/conexion.php");
 $sql="delete from productos where id_producto='".$id_productos."'";
 $resultado=mysqli_query($conexion,$sql);
 if($resultado){
