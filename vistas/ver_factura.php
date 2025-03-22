@@ -17,13 +17,28 @@ include '../conexion/sesion.php';
             background-color: #f5f5dc; /* Cambia #f0f0f0 por el color deseado */
         }
     </style>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script src="../scripts/horaYfecha.js" defer></script>
 </head>
 <body>
-    <div class="container-fluid">
-        <div class="alert alert-info">
-         <h1>Anular Factura</h1>
-            <a class="btn btn-dark"href="Facturas.php">Regresar</a><br><br>
+   
+    <div class="container-fluid alert alert-info sombra">
+
+        <div class="row">
+            <div class="col-8">
+               <h1>Detalles de Factura</h1><a class="btn btn-dark"href="facturas.php">Regresar</a><span></span><?php echo "Usuario: ".$_SESSION['usuario'];?>
+            </div>
+            <div class="col-2">
+                <p id="fechaHora"></p>
+            </div>
+            <div class="col-2">
+                <div class="logo-container">
+                    <img src="../img/logo.png" alt="Logo de la empresa" class="logo"
+                        style="width: 200px; height: auto;">
+                </div>
+            </div>
         </div>
     </div>
 
@@ -50,6 +65,9 @@ if (!empty($no_factura)) {
         $estado = $fila['estado'];
     }
 ?>
+
+
+
 <!-- Sección principal de información de factura -->
 <div class="container-fluid">
     <!-- Cabecera con información básica de la factura -->
@@ -57,7 +75,19 @@ if (!empty($no_factura)) {
         <h4>Número de factura: <?php echo $valor_factura; // Muestra el número de factura ?> </h4>
         <h3>Estado de la Factura: <?php echo $estado; // Muestra el estado actual de la factura ?> </h3>
         
-        <?php
+      
+        
+<div class="accordion d-print-none" id="accordion">
+  <div class="accordion-item">
+    <h2 class="accordion-header">
+      <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+        Anular
+      </button>
+    </h2>
+    <div id="collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordion">
+      <div class="accordion-body">
+
+        <strong>  <?php
         // Verifica si la factura está cerrada para mostrar el formulario de anulación
         if ($fila["estado"] == "Cerrada") {
             // Formulario para anular la factura que solo se muestra si la factura está cerrada
@@ -66,12 +96,12 @@ if (!empty($no_factura)) {
                 <input type="hidden" size="5" id="factura" name="factura" value="' . htmlspecialchars($valor_factura) . '" readonly required>
                 <div class="form-group">
                 
-                <!-- Campo para seleccionar la fecha y hora de anulación -->
-                <div class="form-group">
-                    <label for="fecha_hora_anulacion">Fecha y Hora de Anulación:</label>
-                    <input type="datetime-local" class="form-control" id="fecha_anulacion" name="fecha_anulacion" required>
-                </div>
-                
+               <!-- Campo con la fecha y hora de anulación -->
+<div class="form-group">
+    <label for="fecha_hora_anulacion">Fecha y Hora de Anulación:</label>
+    <input type="datetime-local" class="form-control" id="fecha_anulacion" name="fecha_anulacion" readonly required>
+</div>
+            
                 </div>
                 <!-- Campo para especificar el motivo de la anulación -->
                 <div class="form-group">
@@ -82,8 +112,14 @@ if (!empty($no_factura)) {
                 <button class="btn btn-danger" type="submit" name="submit" value="Anular">ANULAR</button>
             </form>
             </div>';
+            
         }
         ?>
+      </div>
+    </div>
+  </div>
+    
+
     </div>
 </section>
 
@@ -161,6 +197,9 @@ if (!empty($no_factura)) {
             $sql = "SELECT * FROM ventas WHERE factura_venta = '$no_factura'";
             $resultado = mysqli_query($conexion, $sql);
             $num_filas = mysqli_num_rows($resultado);
+            
+            // Variable para acumular el total de ventas
+            $total_ventas = 0;
 
             // Verifica si se encontraron resultados
             if ($num_filas > 0) {
@@ -204,7 +243,18 @@ if (!empty($no_factura)) {
                     echo "<td style='border: 1px solid #000;'>" . $fila["valor_producto"] . "</td>";
                     echo "<td style='border: 1px solid #000;'>" . $fila["estado"] . "</td>";
                     echo "</tr>";
+                    
+                    // Acumular el valor total de la venta
+                    $total_ventas += floatval($fila["valor_total_venta"]);
                 }
+                
+                // Agregar fila para mostrar el total
+                echo "<tr style='border: 1px solid #000; font-weight: bold;'>";
+                echo "<td colspan='5' style='border: 1px solid #000; text-align: right;'>TOTAL:</td>";
+                echo "<td style='border: 1px solid #000;'>" . number_format($total_ventas, 2) . "</td>";
+                echo "<td colspan='8' style='border: 1px solid #000;'></td>";
+                echo "</tr>";
+                
                 echo "</table>";
             } else {
                 // Mensaje cuando no se encuentran resultados
@@ -215,5 +265,24 @@ if (!empty($no_factura)) {
         }
         ?>
     </div>
-</section></body>
+</section>
+</body>
 </html>
+<script>
+    // Función para formatear la fecha y hora al formato requerido por datetime-local
+    function formatearFechaHora() {
+        var ahora = new Date();
+        var año = ahora.getFullYear();
+        var mes = (ahora.getMonth() + 1).toString().padStart(2, '0');
+        var dia = ahora.getDate().toString().padStart(2, '0');
+        var hora = ahora.getHours().toString().padStart(2, '0');
+        var minutos = ahora.getMinutes().toString().padStart(2, '0');
+        
+        return año + '-' + mes + '-' + dia + 'T' + hora + ':' + minutos;
+    }
+    
+    // Establecer la fecha y hora actuales al cargar la página
+    document.addEventListener('DOMContentLoaded', function() {
+        document.getElementById('fecha_anulacion').value = formatearFechaHora();
+    });
+</script>

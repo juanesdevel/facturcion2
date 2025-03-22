@@ -10,14 +10,17 @@ include '../conexion/sesion.php';
 <head>
     <html lang="es">
 
-    <head>
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=0.8">
         <title>Asesor</title>
+
+          <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
         <script src="horaYfecha.js" defer></script>
         <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
         <style>
+
         body {
             background-color: #fbfcfc;
 
@@ -46,13 +49,13 @@ include '../conexion/sesion.php';
                 <h1>Asesor</h1><a href="../conexion/cerrar_sesion.php" class="btn btn-danger btn-sm">Cerrar
                     Sesión</a><span></span><?php echo "Usuario: ".$_SESSION['usuario'];?>
             </div>
-            <div class="col-3">
+            <div class="col-2">
                 <p id="fechaHora"></p>
             </div>
-            <div class="col-1">
+            <div class="col-2">
                 <div class="logo-container">
-                    <img src="../img/presentacion.png" alt="Logo de la empresa" class="logo"
-                        style="width: 80px; height: auto;">
+                    <img src="../img/logo.png" alt="Logo de la empresa" class="logo"
+                        style="width: 200px; height: auto;">
                 </div>
             </div>
         </div>

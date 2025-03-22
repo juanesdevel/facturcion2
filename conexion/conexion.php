@@ -1,8 +1,8 @@
 <?php
-$dbname="facturacion";
-$dbuser="root";
-$dbpass="";
-$dbhost="localhost";
+$dbname="if0_37356103_facturacion";
+$dbuser="if0_37356103";
+$dbpass="ethcD8Mbw2J";
+$dbhost="sql311.infinityfree.com";
 
 $conexion=mysqli_connect($dbhost,$dbuser,$dbpass,$dbname);
 

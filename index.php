@@ -114,7 +114,7 @@
 
     <!-- Pie de página con información del desarrollador -->
     <footer class="footer">
-        <p class="mb-0">Desarrollado por: Juan Esteban Gallego Cano. Contacto: juan_egallegoc@soy.sena.edu.co </p>
+        <p class="mb-0">Desarrollado por: Juan Esteban Gallego Cano. Contacto: juanesnet2016@gmail.com Celular: +57 300 8144841</p>
         <!-- Texto centrado sin márgenes inferiores -->
     </footer>
 

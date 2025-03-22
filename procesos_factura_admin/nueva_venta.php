@@ -39,7 +39,7 @@
                     <a href="../vistas/factura_borrador.php" class="btn btn-dark">Regresar</a>
                 </div>
                 <div class="logo-container">
-                    <img src="../img/presentacion.png" alt="Logo de la empresa" class="logo" style="width: 80px; height: auto;">
+                    <img src="../img/logo.png" alt="Logo de la empresa" class="logo" style="width: 200px; height: auto;">
                 </div>
             </div>
         </div>
@@ -135,13 +135,7 @@ if ($resultado_2) {
             <p>Total con IVA: <?php echo $total_venta; ?></p>
             
         </div>
-        
-        <?php echo "<div class='container mt-3 no-print'>
-             <button class='btn btn-primary' onclick='imprimir()'>Imprimir</button>
-             <button class='btn btn-success' onclick='guardarPDF()'>Guardar en PDF</button>
-          </div>"; ?>
-
-
+       
 <?php
 
     } else {
@@ -185,23 +179,52 @@ mysqli_close($conexion);
 </script>
 
 <script>
-    function imprimir() {
-        window.print(); // Imprimir la pantalla
-    }
+   // Función para manejar el cierre de factura
+document.addEventListener('DOMContentLoaded', function() {
+  // Obtener el formulario
+  const formulario = document.querySelector('form[action="nueva_factura.php"]');
+  
+  // Agregar listener al formulario
+  if (formulario) {
+    formulario.addEventListener('submit', function(event) {
+      // Prevenir el envío del formulario por defecto
+      event.preventDefault();
+      
+      // Preguntar confirmación al usuario
+      const confirmacion = confirm("¿Está seguro que desea cerrar la factura de venta?");
+      
+      // Si el usuario confirma, continuar con el proceso
+      if (confirmacion) {
+        // Almacenar los datos del formulario para enviarlos después
+        const formData = new FormData(formulario);
+        const totalVenta = formData.get('total_venta');
+        
+        // Iniciar la impresión
+        window.print();
+        
+        // Usar un timeout para asegurar que los datos se envíen después de que la impresión haya iniciado
+        setTimeout(function() {
+          // Crear una solicitud AJAX para enviar los datos sin recargar la página
+          const xhr = new XMLHttpRequest();
+          xhr.open('POST', 'nueva_factura.php', true);
+          xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+          
+          xhr.onload = function() {
+            if (xhr.status === 200) {
+              // Redirigir o mostrar mensaje de éxito
+              alert('Factura cerrada correctamente');
+              window.location.href = '../vistas/factura_borrador.php'; // Redirigir
+            } else {
+              alert('Error al cerrar la factura');
+            }
+          };
+          
+          // Enviar los datos
+          xhr.send('total_venta=' + encodeURIComponent(totalVenta) + '&consultar_ultima_factura=1');
+        }, 1500); // Esperar 1.5 segundos para dar tiempo a la impresión
+      }
+    });
+  }
+});
 
-    function guardarPDF() {
-        const element = document.querySelector('.container'); // Elemento que quieres guardar en PDF
-        const pdf = new jsPDF(); // Crear un nuevo objeto jsPDF
-
-        // Opciones de jsPDF para el formato del PDF
-        const options = {
-            background: 'white',
-            scale: 3 // Escala del PDF, ajusta según tu necesidad
-        };
-
-        // Guardar el contenido en PDF
-        pdf.html(element, options, function () {
-            pdf.save('contenido.pdf'); // Nombre del archivo PDF
-        });
-    }
 </script>

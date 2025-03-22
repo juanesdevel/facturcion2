@@ -17,8 +17,10 @@ if (!isset($_SESSION['rol']) || $_SESSION['rol'] != 'admin') {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=0.8">
     <title>Administrador</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+  </body>
     <script src="../scripts/horaYfecha.js" defer></script>
     <style>
     body {
@@ -46,7 +48,7 @@ if (!isset($_SESSION['rol']) || $_SESSION['rol'] != 'admin') {
                 <h1>Panel Administrador</h1>
                 <a href="../conexion/cerrar_sesion.php" class="btn btn-danger btn-sm sombra"
                     onclick="return confirmarCierreSesion()">Cerrar Sesión</a>
-                <span><?php echo "Usuario: " . $_SESSION['usuario']; ?></span>
+               <span class="badge text-bg-Warning"><?php echo "Usuario: " . $_SESSION['usuario']; ?></span>
             </div>
             <div class="col-2">
                 <p id="fechaHora"></p>
